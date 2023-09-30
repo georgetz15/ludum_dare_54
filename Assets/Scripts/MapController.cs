@@ -10,26 +10,24 @@ public class MapController : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        var distance = 5;
-        _pathGraph = GeneratePathGraph(distance, LayerMask.GetMask("Planets"));
-        var edges = new List<Tuple<Transform, Transform>>();
-        foreach (var nodeFrom in _pathGraph.Keys)
-        {
-            foreach (var nodeTo in _pathGraph[nodeFrom])
-            {
-                edges.Add(new Tuple<Transform, Transform>(nodeFrom, nodeTo));
-            }
-        }
-        // TODO: render the graph
-        foreach (var edge in edges)
-        {
-            Debug.Log($"Found edge {edge.Item1.name}, {edge.Item2.name}");
-        }
+        UpdatePathGraph();
+        var edges = GetEdges(_pathGraph);
+        foreach (var edge in edges) Debug.Log($"Found edge {edge.Item1.name}, {edge.Item2.name}");
     }
 
     // Update is called once per frame
     private void Update()
     {
+    }
+
+    private List<Tuple<Transform, Transform>> GetEdges(Dictionary<Transform, HashSet<Transform>> pathGraph)
+    {
+        var edges = new List<Tuple<Transform, Transform>>();
+        foreach (var nodeFrom in pathGraph.Keys)
+        foreach (var nodeTo in pathGraph[nodeFrom])
+            edges.Add(new Tuple<Transform, Transform>(nodeFrom, nodeTo));
+
+        return edges;
     }
 
     // Planets with distance within range are connected
@@ -63,14 +61,18 @@ public class MapController : MonoBehaviour
                      hitColliders
                          .Select(hitCollider => hitCollider.transform)
                          .Where(transform => !visited.Contains(transform)))
-            {
                 graph[currentNode].Add(otherNode);
-                // Keep graph "directional" to simplify things
-                // when rendering edges
-                // graph[otherNode].Add(currentNode);
-            }
+            // Keep graph "directional" to simplify things
+            // when rendering edges
+            // graph[otherNode].Add(currentNode);
         }
 
         return graph;
+    }
+
+    private void UpdatePathGraph()
+    {
+        var distance = 5;
+        _pathGraph = GeneratePathGraph(distance, LayerMask.GetMask("Planets"));
     }
 }
