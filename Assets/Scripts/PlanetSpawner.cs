@@ -64,7 +64,7 @@ public class PlanetSpawner : MonoBehaviour
 	{
 		Vector3 newPosition;
 		int retries = 0;
-		int max_retries = 10;
+		int max_retries = 50;
 		do
 		{	
 
