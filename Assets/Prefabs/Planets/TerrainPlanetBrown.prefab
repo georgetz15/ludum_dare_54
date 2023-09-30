@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 7449436661567237578}
   - component: {fileID: 457303034362944523}
   - component: {fileID: 8390807826546662869}
-  m_Layer: 0
+  - component: {fileID: 6467332410497118944}
+  m_Layer: 6
   m_Name: TerrainPlanetBrown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -120,3 +121,24 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   planetID: 0
+--- !u!135 &6467332410497118944
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8380450041259798947}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.24
+  m_Center: {x: 0, y: 0, z: 0}
