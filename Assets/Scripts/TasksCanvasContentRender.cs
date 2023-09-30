@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using Models;
+using TMPro;
 using UnityEngine;
 
 public class TasksCanvasContentRender : MonoBehaviour
 {
     // prefab component
-    [SerializeReference] public GameObject ListItem;
+    [SerializeReference] public TMP_Text ListItem;
     
     // data from an other controller
     [SerializeReference] public GameObject taskController;
@@ -14,8 +15,7 @@ public class TasksCanvasContentRender : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        var item = Instantiate(ListItem);
-        item.transform.parent = gameObject.transform;
+      
     }
 
     // Update is called once per frame
@@ -26,5 +26,8 @@ public class TasksCanvasContentRender : MonoBehaviour
 
     public void onTaskCreate(PLayerTasks pLayerTask)
     {
+        var item = Instantiate(ListItem);
+        item.transform.parent = gameObject.transform;
+        item.text = $"{pLayerTask.CargoUnits} ({pLayerTask.CargoName})";
     }
 }

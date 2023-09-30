@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Models;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class TaskController : MonoBehaviour
 {
@@ -10,6 +11,11 @@ public class TaskController : MonoBehaviour
     [field: SerializeReference]
     public SpaceShipController spaceShipController { get; set; }
     
+    [SerializeField]
+    public List<PLayerTasks> availableTasks = new() { };
+
+    [SerializeField] public UnityEvent<PLayerTasks> onTaskCreate;
+        
     private readonly string[] _cargoType = {
         "Scientific Instruments",
         "Rovers and Landers",
@@ -23,9 +29,6 @@ public class TaskController : MonoBehaviour
         "Power Generation and Storage",
         "Payloads for Commercial Ventures"
     };
-
-    [SerializeField]
-    public List<PLayerTasks> availableTasks = new() { };
     
     // Start is called before the first frame update
     void Start()
@@ -44,16 +47,20 @@ public class TaskController : MonoBehaviour
     private void GenerateTasks()
     {
         var maxCargoCapacity = spaceShipController.MaxCargoCapacity;
-        var randomCargoTypeIndex = Random.Range(0, _cargoType.Length);   
-        availableTasks.Add(new PLayerTasks(){
+        var randomCargoTypeIndex = Random.Range(0, _cargoType.Length);
+        var newTask = new PLayerTasks()
+        {
             CargoName = _cargoType[randomCargoTypeIndex],
             CargoUnits = Random.Range(1, maxCargoCapacity),
             PlanetFrom = null,
             PlanetTo = null,
             StartDateIssued = 0,
             DeliveryTick = 10
-        });
+        };
+        availableTasks.Add(newTask);
         Debug.Log($"new task name {_cargoType[randomCargoTypeIndex]}");
+
+        onTaskCreate.Invoke(newTask);
     }
     
     private int HowManyNewTasksWeNeedToGenerate()
