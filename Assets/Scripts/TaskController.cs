@@ -1,22 +1,17 @@
 using System.Collections.Generic;
+using System.Linq;
 using Models;
 using UnityEngine;
 using UnityEngine.Events;
 
 public class TaskController : MonoBehaviour
 {
-    
-    private readonly int _maxNumberOfAvailableTasks  = 12;
-    
-    [field: SerializeReference]
-    public SpaceShipController spaceShipController { get; set; }
-    
-    [SerializeField]
-    public List<PLayerTasks> availableTasks = new() { };
+    [field: SerializeReference] public SpaceShipController spaceShipController { get; set; }
 
     [SerializeField] public UnityEvent<PLayerTasks> onTaskCreate;
-        
-    private readonly string[] _cargoType = {
+
+    private readonly string[] _cargoType =
+    {
         "Scientific Instruments",
         "Rovers and Landers",
         "Habitat Modules",
@@ -29,31 +24,39 @@ public class TaskController : MonoBehaviour
         "Power Generation and Storage",
         "Payloads for Commercial Ventures"
     };
-    
+
+    private readonly int _maxNumberOfAvailableTasks = 12;
+
+    private List<GameObject> _planets;
+
+    [SerializeField] public List<PLayerTasks> availableTasks = new();
+
     // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
+        if (onTaskCreate == null)
+            onTaskCreate = new UnityEvent<PLayerTasks>();
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (HowManyNewTasksWeNeedToGenerate() > 0)
-        {
-            GenerateTasks();
-        }
+        if (HowManyNewTasksWeNeedToGenerate() > 0) GenerateTasks();
     }
 
     private void GenerateTasks()
     {
         var maxCargoCapacity = spaceShipController.MaxCargoCapacity;
         var randomCargoTypeIndex = Random.Range(0, _cargoType.Length);
-        var newTask = new PLayerTasks()
+        _planets = MapController.GetPlanets().ToList();
+        var planetFrom = _planets[Random.Range(0, _planets.Count - 1)];
+        var planetTo = _planets.Where(x => x != planetFrom).ToList()[Random.Range(0, _planets.Count - 2)];
+        var newTask = new PLayerTasks
         {
             CargoName = _cargoType[randomCargoTypeIndex],
             CargoUnits = Random.Range(1, maxCargoCapacity),
-            PlanetFrom = null,
-            PlanetTo = null,
+            PlanetFrom = planetFrom,
+            PlanetTo = planetTo,
             StartDateIssued = 0,
             DeliveryTick = 10
         };
@@ -62,7 +65,7 @@ public class TaskController : MonoBehaviour
 
         onTaskCreate.Invoke(newTask);
     }
-    
+
     private int HowManyNewTasksWeNeedToGenerate()
     {
         return _maxNumberOfAvailableTasks - availableTasks.Count;
