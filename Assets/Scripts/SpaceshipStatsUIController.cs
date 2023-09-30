@@ -24,6 +24,6 @@ public class SpaceshipStatsUIController : MonoBehaviour
     {
         var cargo = spaceShipController.Cargo;
         var maxCargo = spaceShipController.MaxCargoCapacity;
-        cargoText.text = $"Cargo: {cargo}/{maxCargo} Tons";
+        cargoText.text = $"Cargo: {cargo}/{maxCargo} Units";
     }
 }
