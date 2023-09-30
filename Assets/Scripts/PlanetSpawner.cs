@@ -64,10 +64,11 @@ public class PlanetSpawner : MonoBehaviour
 	private Vector3 GenerateRandomPosition(Vector3 previousPosition)
 	{
 		Vector3 newPosition;
-		int retries = 0;
-		int max_retries = 250;
-		do
-		{	
+		int maxRetries = 250;
+
+
+		for (int retry = 0; retry < maxRetries; ++retry)
+		{
 
 			// Generate a random position within the circular range
 			float angle = Random.Range(0f, 360f);
@@ -87,31 +88,44 @@ public class PlanetSpawner : MonoBehaviour
 			newPosition.x = Mathf.Clamp(newPosition.x, xMinBound, xMaxBound);
 			newPosition.y = Mathf.Clamp(newPosition.y, yMinBound, yMaxBound);
 
-			if (retries > max_retries)
+			// Check for collisions with other planets
+			Collider2D[] colliders = Physics2D.OverlapCircleAll(newPosition, maxSize);
+			bool isCollision = false;
+
+			foreach (Collider2D collider in colliders)
 			{
+				if (collider.gameObject != null && collider.gameObject != this.gameObject)
+				{
+					isCollision = true;
+					break;
+				}
+			}
+
+			// Check for spacing constraint
+			bool isSpacingValid = true;
+			foreach (Vector3 usedPosition in usedPositions)
+			{
+				if (Vector3.Distance(newPosition, usedPosition) < minSpacing)
+				{
+					isSpacingValid = false;
+					break;
+				}
+			}
+
+			// Check for the 5% chance of falling outside the range
+			bool isOutsideRange = Random.Range(0f, 1f) <= 0.05f;
+
+			if (!isCollision && isSpacingValid && !isOutsideRange)
+			{
+				// Valid position found, add it to used positions and return
+				usedPositions.Add(newPosition);
 				return newPosition;
 			}
-			retries++;
+		}
 
-			// Check if the position is not valid
-			if (Vector3.Distance(newPosition, previousPosition) < minSpacing || IsPositionUsed(newPosition) || Random.Range(0f, 1f) <= 0.05f)
-			{
-				// Backtrack to a previously tried position or start over
-				if (usedPositions.Count > 0)
-				{
-					newPosition = usedPositions[Random.Range(0, usedPositions.Count)];
-				}
-				else
-				{
-					// If no previous positions to backtrack to, start over
-					newPosition = Vector3.zero; // You can set it to your initial position or any suitable value
-				}
-			}
-		} while (Vector3.Distance(newPosition, previousPosition) < minSpacing || IsPositionUsed(newPosition) || Random.Range(0f, 1f) <= probOutsideRange);
-		usedPositions.Add(newPosition);
-		return newPosition;
+		return initialPosition;
 	}
-
+	
 	private bool IsPositionUsed(Vector3 position)
 	{
 		foreach (Vector3 usedPosition in usedPositions)
