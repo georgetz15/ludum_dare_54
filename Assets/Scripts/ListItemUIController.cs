@@ -23,12 +23,12 @@ public class ListItemUIController : MonoBehaviour
         
     }
 
-    public void setListItem(PLayerTasks task)
+    public void SetListItem(PLayerTasks task)
     {
         titleText.text = task.CargoName;
         fromPlanetText.text = $"From: {task.PlanetFrom.name}";
-        toPlanetText.text = $"From: {task.PlanetTo.name}";
+        toPlanetText.text = $"To: {task.PlanetTo.name}";
         rewardText.text = $"Reward: {100} credits";
-        deadlineText.text = $"Deadline: {task.DeliveryTick}";
+        deadlineText.text = $"Deadline: {task.DeliveryTick} parsecs";
     }
 }

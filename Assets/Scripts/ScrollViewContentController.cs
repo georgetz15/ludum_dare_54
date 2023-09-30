@@ -24,7 +24,7 @@ public class ScrollViewContentController : MonoBehaviour
     {
         var item = Instantiate(listItemPrefab, transform, true);
         var liController = item.GetComponent<ListItemUIController>();
-        liController.setListItem(task);
+        liController.SetListItem(task);
         _tasks.Add(task, item.transform);
     }
 
