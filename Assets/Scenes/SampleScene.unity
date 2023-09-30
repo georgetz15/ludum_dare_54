@@ -245,10 +245,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   planetPrefabs:
   - {fileID: 7650703716662421559, guid: 46f16489d813818438ba0301f928822a, type: 3}
+  - {fileID: 4569323110855138788, guid: b783713862649bb4cbb80abe0cd442ac, type: 3}
   - {fileID: 2327325577624524606, guid: dba05276388872843a47e6fed4965e08, type: 3}
-  - {fileID: 2757702226728360944, guid: bcf74be270b819d4398706f7bdefceaa, type: 3}
+  - {fileID: 4204300498221019980, guid: 7400ccbbadeeb3d48aecfba00b64e8d7, type: 3}
+  - {fileID: 3709129775704099342, guid: f4c5fdb9186bb664e8eafd7559c8a802, type: 3}
+  - {fileID: 371239659437542598, guid: bcf74be270b819d4398706f7bdefceaa, type: 3}
+  - {fileID: 7053989771488963555, guid: e1be9633b8f89b145832cb04cbe47908, type: 3}
   - {fileID: 8380450041259798947, guid: 6fca76d0327a59340b673539dc68fbd4, type: 3}
-  numPlanets: 6
+  numPlanets: 10
   gridSize: {x: 20, y: 13}
   initialPosition: {x: 1, y: 0}
   minSize: 1
@@ -787,6 +791,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <spaceShipController>k__BackingField: {fileID: 1198911363}
+  onTaskCreate:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1321537526
 Transform:
   m_ObjectHideFlags: 0

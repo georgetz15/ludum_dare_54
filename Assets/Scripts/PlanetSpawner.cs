@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Tilemaps;
 using Random = UnityEngine.Random;
 
 public class PlanetSpawner : MonoBehaviour
@@ -11,28 +9,6 @@ public class PlanetSpawner : MonoBehaviour
 	public int numPlanets = 6; // Number of planets to generate
 	public Vector2 gridSize = new Vector2(20f, 20f); // Size of the grid
 	public Vector2 initialPosition = Vector2.zero; // Initial position to start generating planets	
-	private string[] _planetNames = {
-		"Mercury",
-		"Venus",
-		"Earth",
-		"Mars",
-		"Jupiter",
-		"Saturn",
-		"Uranus",
-		"Neptune",
-		"Pluto",
-		"Ceres",
-		"Eris",
-		"Haumea",
-		"Makemake",
-		"Planet Nine",
-		"Kepler-452b",
-		"Gliese 581g",
-		"HD 209458b",
-		"Tatooine",
-		"Alderaan",
-		"Endor"
-	};
 	
 	// Size controls
 	public float minSize = 1f;
@@ -61,7 +37,6 @@ public class PlanetSpawner : MonoBehaviour
 	{
 		// Create a list of positions to track where planets are placed
 		Vector3 currentPosition = initialPosition;
-
 		int planetNameCounter = 0;
 		for (int i = 0; i < numPlanets; i++)
 		{
@@ -69,8 +44,8 @@ public class PlanetSpawner : MonoBehaviour
 			GameObject randomPlanetPrefab = planetPrefabs[Random.Range(0, planetPrefabs.Length)];
 
 			GameObject planet = Instantiate(randomPlanetPrefab, currentPosition, Quaternion.identity);
-			planetNameCounter = i%_planetNames.Length;
-			planet.name = $"Planet_{_planetNames[planetNameCounter]}";
+			planetNameCounter = i% PlanetNames.names.Length;
+			planet.name = $"{PlanetNames.names[planetNameCounter]}";
 
 			// Set random size, animation speed, and cycle offset
 			float randomSize = Random.Range(minSize, maxSize);
@@ -90,7 +65,7 @@ public class PlanetSpawner : MonoBehaviour
 	{
 		Vector3 newPosition;
 		int retries = 0;
-		int max_retries = 50;
+		int max_retries = 250;
 		do
 		{	
 
@@ -112,6 +87,12 @@ public class PlanetSpawner : MonoBehaviour
 			newPosition.x = Mathf.Clamp(newPosition.x, xMinBound, xMaxBound);
 			newPosition.y = Mathf.Clamp(newPosition.y, yMinBound, yMaxBound);
 
+			if (retries > max_retries)
+			{
+				return newPosition;
+			}
+			retries++;
+
 			// Check if the position is not valid
 			if (Vector3.Distance(newPosition, previousPosition) < minSpacing || IsPositionUsed(newPosition) || Random.Range(0f, 1f) <= 0.05f)
 			{
@@ -126,12 +107,6 @@ public class PlanetSpawner : MonoBehaviour
 					newPosition = Vector3.zero; // You can set it to your initial position or any suitable value
 				}
 			}
-
-			if (retries > max_retries)
-			{
-				return newPosition;
-			}
-			retries++;
 		} while (Vector3.Distance(newPosition, previousPosition) < minSpacing || IsPositionUsed(newPosition) || Random.Range(0f, 1f) <= probOutsideRange);
 		usedPositions.Add(newPosition);
 		return newPosition;
