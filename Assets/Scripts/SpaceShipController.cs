@@ -1,15 +1,22 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class SpaceShipController : MonoBehaviour
 {
-    [SerializeField] public int MaxCargoCapacity { get; set; } = 6;
-    
-    [SerializeField] private float range = 5.0f;
+    public int MaxCargoCapacity
+    {
+        get => maxCargoCapacity;
+        set => maxCargoCapacity = value;
+    }
+
     public float Range
     {
         get => range;
         set => range = value;
     }
+
+    [SerializeField] private float range = 5.0f;
+    [SerializeField] private int maxCargoCapacity = 6;
 
     // Start is called before the first frame update
     private void Start()
