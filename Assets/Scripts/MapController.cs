@@ -5,9 +5,9 @@ using UnityEngine;
 
 public class MapController : MonoBehaviour
 {
-    private Dictionary<Transform, HashSet<Transform>> _pathGraph;
     [SerializeField] private GameObject edgePrefab;
     [SerializeField] private float lineWidth = 0.1f;
+    private Dictionary<Transform, HashSet<Transform>> _pathGraph;
 
     // Start is called before the first frame update
     private void Start()
@@ -18,6 +18,7 @@ public class MapController : MonoBehaviour
     private void Update()
     {
         // Create the path graph and show edges to the screen
+        // TODO: move this out of update when we're done with tuning
         CleanupGraph();
         UpdatePathGraph();
         var edges = GetEdges(_pathGraph);
@@ -39,17 +40,9 @@ public class MapController : MonoBehaviour
     // Planets with distance within range are connected
     private static Dictionary<Transform, HashSet<Transform>> GeneratePathGraph(float distance, LayerMask nodesLayer)
     {
-        // Hardcode this to sth big
-        // const float vertexSearchDistance = 1000f;
-        // var hitColliders = new List<Collider>(
-        //     Physics.OverlapSphere(Vector3.zero,
-        //         vertexSearchDistance,
-        //         nodesLayer
-        //     ));
         var nodes = GameController.GetObjectsInLayer(nodesLayer);
 
-        var graph = new Dictionary<Transform, HashSet<Transform>>();
-        foreach (var node in nodes) graph.Add(node.transform, new HashSet<Transform>());
+        var graph = nodes.ToDictionary(node => node.transform, node => new HashSet<Transform>());
 
         var visited = new HashSet<Transform>();
         var newNodes = new Stack<Transform>(graph.Keys);
@@ -100,9 +93,6 @@ public class MapController : MonoBehaviour
     {
         _pathGraph = new Dictionary<Transform, HashSet<Transform>>();
         var edges = GameController.GetObjectsInLayer(LayerMask.GetMask("Graph"));
-        foreach (var edge in edges)
-        {
-            Destroy(edge);
-        }
+        foreach (var edge in edges) Destroy(edge);
     }
 }
