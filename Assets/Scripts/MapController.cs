@@ -95,4 +95,9 @@ public class MapController : MonoBehaviour
         var edges = GameController.GetObjectsInLayer(LayerMask.GetMask("Graph"));
         foreach (var edge in edges) Destroy(edge);
     }
+
+    public static IEnumerable<GameObject> GetPlanets()
+    {
+        return GameController.GetObjectsInLayer(LayerMask.GetMask("Planets"));
+    }
 }
