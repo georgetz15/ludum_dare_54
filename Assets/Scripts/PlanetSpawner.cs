@@ -4,24 +4,32 @@ using UnityEngine.Tilemaps;
 
 public class PlanetSpawner : MonoBehaviour
 {
+	// Grid controls
 	public GameObject[] planetPrefabs; // Array of different planet prefabs
 	public int numPlanets = 6; // Number of planets to generate
-	public float minSize = 1.5f;
-	public float maxSize = 3.5f;
+	public Vector2 gridSize = new Vector2(20f, 20f); // Size of the grid
+	public Vector2 initialPosition = Vector2.zero; // Initial position to start generating planets	
+	
+	// Size controls
+	public float minSize = 1f;
+	public float maxSize = 2.5f;
+
+    // Animatioon controls
 	public float minAnimSpeed = 0.8f;
 	public float maxAnimSpeed = 1.2f;
 	public float minAnimCycleOffset = 0.0f;
 	public float maxAnimCycleOffset = 1.0f;
-	public float minSpacing = 4f; // Minimum spacing between planets
-	public float maxRange = 10f; // Maximum range from spaceship
-	public Vector2 gridSize = new Vector2(20f, 20f); // Size of the grid
-	public Vector2 initialPosition = Vector2.zero; // Initial position to start generating planets
 
+	// Position controls
+	// TODO : Get range from spaceship controller
+	private float minSpacing;
+	public float range = 7; // Maximum range from spaceship
 	private List<Vector3> usedPositions = new List<Vector3>();
 	private float probOutsideRange = 0.05f;
 
 	void Start()
 	{
+		minSpacing = maxSize;
 		GeneratePlanets();
 	}
 
@@ -55,24 +63,50 @@ public class PlanetSpawner : MonoBehaviour
 	private Vector3 GenerateRandomPosition(Vector3 previousPosition)
 	{
 		Vector3 newPosition;
-		// Todo: Change this to something smarter? :P 
-		float planetRadius = minSpacing;
+		int retries = 0;
+		int max_retries = 10;
 		do
-		{
+		{	
+
+			// Generate a random position within the circular range
 			float angle = Random.Range(0f, 360f);
-			float distance = Random.Range(minSpacing + planetRadius, maxRange);
+			float distance = Random.Range(minSpacing, range);
 
 			float xOffset = Mathf.Cos(angle * Mathf.Deg2Rad) * distance;
 			float yOffset = Mathf.Sin(angle * Mathf.Deg2Rad) * distance;
 
 			newPosition = previousPosition + new Vector3(xOffset, yOffset, 0f);
 
-			// Ensure the center of the planet remains within the grid boundaries
-			newPosition.x = Mathf.Clamp(newPosition.x, -gridSize.x / 2 + planetRadius, gridSize.x / 2 - planetRadius);
-			newPosition.y = Mathf.Clamp(newPosition.y, -gridSize.y / 2 + planetRadius, gridSize.y / 2 - planetRadius);
-		} while (Vector3.Distance(newPosition, previousPosition) < minSpacing ||
-												  IsPositionUsed(newPosition) || 
-												  Random.Range(0f, 1f) <= probOutsideRange);
+			// Ensure the planet, including its maximum size, remains within the grid boundaries
+			float xMinBound = -gridSize.x / 2 + maxSize;
+			float xMaxBound = gridSize.x / 2 - maxSize;
+			float yMinBound = -gridSize.y / 2 + maxSize;
+			float yMaxBound = gridSize.y / 2 - maxSize;
+
+			newPosition.x = Mathf.Clamp(newPosition.x, xMinBound, xMaxBound);
+			newPosition.y = Mathf.Clamp(newPosition.y, yMinBound, yMaxBound);
+
+			// Check if the position is not valid
+			if (Vector3.Distance(newPosition, previousPosition) < minSpacing || IsPositionUsed(newPosition) || Random.Range(0f, 1f) <= 0.05f)
+			{
+				// Backtrack to a previously tried position or start over
+				if (usedPositions.Count > 0)
+				{
+					newPosition = usedPositions[Random.Range(0, usedPositions.Count)];
+				}
+				else
+				{
+					// If no previous positions to backtrack to, start over
+					newPosition = Vector3.zero; // You can set it to your initial position or any suitable value
+				}
+			}
+
+			if (retries > max_retries)
+			{
+				return newPosition;
+			}
+			retries++;
+		} while (Vector3.Distance(newPosition, previousPosition) < minSpacing || IsPositionUsed(newPosition) || Random.Range(0f, 1f) <= probOutsideRange);
 		usedPositions.Add(newPosition);
 		return newPosition;
 	}
