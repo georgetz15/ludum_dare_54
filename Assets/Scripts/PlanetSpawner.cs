@@ -15,8 +15,8 @@ public class PlanetSpawner : MonoBehaviour
 	public float maxSize = 2.5f;
 
     // Animatioon controls
-	public float minAnimSpeed = 0.8f;
-	public float maxAnimSpeed = 1.2f;
+	public float minAnimSpeed = 0.05f;
+	public float maxAnimSpeed = 0.3f;
 	public float minAnimCycleOffset = 0.0f;
 	public float maxAnimCycleOffset = 1.0f;
 
