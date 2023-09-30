@@ -6,43 +6,50 @@ using UnityEngine;
 public class MapController : MonoBehaviour
 {
     private Dictionary<Transform, HashSet<Transform>> _pathGraph;
+    [SerializeField] private GameObject edgePrefab;
+    [SerializeField] private float lineWidth = 0.1f;
 
     // Start is called before the first frame update
     private void Start()
     {
-        UpdatePathGraph();
-        var edges = GetEdges(_pathGraph);
-        foreach (var edge in edges) Debug.Log($"Found edge {edge.Item1.name}, {edge.Item2.name}");
     }
 
     // Update is called once per frame
     private void Update()
     {
+        // Create the path graph and show edges to the screen
+        CleanupGraph();
+        UpdatePathGraph();
+        var edges = GetEdges(_pathGraph);
+        foreach (var edge in edges)
+        {
+            Debug.Log($"Found edge {edge.Item1.name}, {edge.Item2.name}");
+            CreateEdgeObject(edge.Item1, edge.Item2);
+        }
     }
 
-    private List<Tuple<Transform, Transform>> GetEdges(Dictionary<Transform, HashSet<Transform>> pathGraph)
+    private static IEnumerable<Tuple<Transform, Transform>> GetEdges(
+        Dictionary<Transform, HashSet<Transform>> pathGraph)
     {
-        var edges = new List<Tuple<Transform, Transform>>();
-        foreach (var nodeFrom in pathGraph.Keys)
-        foreach (var nodeTo in pathGraph[nodeFrom])
-            edges.Add(new Tuple<Transform, Transform>(nodeFrom, nodeTo));
-
-        return edges;
+        return from nodeFrom in pathGraph.Keys
+            from nodeTo in pathGraph[nodeFrom]
+            select new Tuple<Transform, Transform>(nodeFrom, nodeTo);
     }
 
     // Planets with distance within range are connected
     private static Dictionary<Transform, HashSet<Transform>> GeneratePathGraph(float distance, LayerMask nodesLayer)
     {
         // Hardcode this to sth big
-        const float vertexSearchDistance = 1000f;
-        var hitColliders = new List<Collider>(
-            Physics.OverlapSphere(Vector3.zero,
-                vertexSearchDistance,
-                nodesLayer
-            ));
+        // const float vertexSearchDistance = 1000f;
+        // var hitColliders = new List<Collider>(
+        //     Physics.OverlapSphere(Vector3.zero,
+        //         vertexSearchDistance,
+        //         nodesLayer
+        //     ));
+        var nodes = GameController.GetObjectsInLayer(nodesLayer);
 
         var graph = new Dictionary<Transform, HashSet<Transform>>();
-        foreach (var collider in hitColliders) graph.Add(collider.transform, new HashSet<Transform>());
+        foreach (var node in nodes) graph.Add(node.transform, new HashSet<Transform>());
 
         var visited = new HashSet<Transform>();
         var newNodes = new Stack<Transform>(graph.Keys);
@@ -53,7 +60,7 @@ public class MapController : MonoBehaviour
             visited.Add(currentNode);
 
             // Find new nodes
-            hitColliders = new List<Collider>(
+            var hitColliders = new List<Collider>(
                 Physics.OverlapSphere(currentNode.position,
                     distance,
                     nodesLayer));
@@ -72,7 +79,30 @@ public class MapController : MonoBehaviour
 
     private void UpdatePathGraph()
     {
-        var distance = 5;
+        var spaceshipController =
+            GameObject.FindGameObjectWithTag("SpaceshipController").GetComponent<SpaceShipController>();
+        var distance = spaceshipController.Range;
         _pathGraph = GeneratePathGraph(distance, LayerMask.GetMask("Planets"));
+    }
+
+    private void CreateEdgeObject(Transform a, Transform b)
+    {
+        // setup light path
+        var newLightLine = Instantiate(edgePrefab, transform);
+        var lr = newLightLine.GetComponent<LineRenderer>();
+        var positions = new Vector3[2] { a.position, b.position };
+        lr.SetPositions(positions);
+        lr.startWidth = lineWidth;
+        lr.endWidth = lineWidth;
+    }
+
+    private void CleanupGraph()
+    {
+        _pathGraph = new Dictionary<Transform, HashSet<Transform>>();
+        var edges = GameController.GetObjectsInLayer(LayerMask.GetMask("Graph"));
+        foreach (var edge in edges)
+        {
+            Destroy(edge);
+        }
     }
 }
