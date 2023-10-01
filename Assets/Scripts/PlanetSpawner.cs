@@ -33,7 +33,6 @@ public class PlanetSpawner : MonoBehaviour
 	void Start()
 	{
 		minSpacing = maxSize;
-		GeneratePlanets();
 	}
 
 	public void GeneratePlanets()
