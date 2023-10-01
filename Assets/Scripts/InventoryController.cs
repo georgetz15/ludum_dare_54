@@ -10,6 +10,8 @@ public class InventoryController : MonoBehaviour
 
 	public Transform InventoryGridTransform;
 	public GameObject ItemPrefab;
+	public GameObject InventoryUI;
+	public Toggle InventoryToggle;
 	
 	private int capacity;
 
@@ -65,7 +67,16 @@ public class InventoryController : MonoBehaviour
 	{
 		Items.Remove(item);
 	}
-	
+
+	public void CloseInventoryUI()
+	{
+		if (InventoryUI.activeSelf)
+		{
+			InventoryUI.SetActive(false);
+			InventoryToggle.isOn = false;
+		}
+	}
+
 	public void ToggleCallback(bool b)
 	{
 		if (b)

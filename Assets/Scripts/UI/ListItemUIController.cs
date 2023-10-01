@@ -29,6 +29,13 @@ public class ListItemUIController : MonoBehaviour
 
             if (!taskCtrl.CanAcceptMission(cargoQuantity))
             {
+                var messageBox = MessageBox.Instance;
+                if (messageBox is null)
+                {
+                    messageBox = new MessageBox();
+                };
+
+                messageBox.DisplayMsg("Your space is too limited for this cargo, sorry...");
                 return;
             }
             invCtrl.AddItem(cargoItem, cargoQuantity);
