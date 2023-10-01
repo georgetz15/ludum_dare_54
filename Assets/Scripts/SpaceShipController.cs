@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -31,6 +32,15 @@ public class SpaceShipController : MonoBehaviour
         }
     }
 
+    // private GameObject _currentPlane
+    public GameObject CurrentPlanet { get; private set; }
+
+    public void TravelTo(GameObject destination)
+    {
+        transform.position = destination.transform.position;
+        CurrentPlanet = destination;
+    }
+
 
     // Start is called before the first frame update
     private void Awake()
@@ -41,5 +51,12 @@ public class SpaceShipController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+    }
+
+    public void setRandomPlanetStartingPoint()
+    {
+        var planets = GameController.GetObjectsInLayer(LayerMask.GetMask("Planets")).ToList();
+        var i = Random.Range(0, planets.Count - 1);
+        TravelTo(planets[i]);
     }
 }

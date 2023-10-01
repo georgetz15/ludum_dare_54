@@ -121,6 +121,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   planetID: 0
+  spaceshipController: {fileID: 0}
 --- !u!135 &2548152595240134344
 SphereCollider:
   m_ObjectHideFlags: 0

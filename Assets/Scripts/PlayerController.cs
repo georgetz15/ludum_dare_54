@@ -1,42 +1,68 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    private Vector2 _mousePosition;
     [SerializeField] private Camera _camera;
-    
+    private Vector2 _mousePosition;
+    private Transform _target;
+
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
     }
 
     private void OnLook(InputValue value)
     {
         _mousePosition = value.Get<Vector2>();
+        var target = GetMouseTarget(_camera);
+
+        if (target == _target) return;
+        if (target is null)
+        {
+            OnHoverExit(_target);
+            _target = null;
+            return;
+        }
+
+        if (!GameController.IsInPlanetsLayer(target.gameObject.layer)) return;
+
+        _target = target;
+        OnHoverEnter(_target);
+    }
+
+    private void OnHoverEnter(Transform target)
+    {
+        Debug.Log("Player hovered over " + target.name);
+        var pc = target.GetComponent<PlanetController>();
+        if (pc is null) return;
+        pc.OnHoverEnter();
+    }
+
+    private void OnHoverExit(Transform target)
+    {
+        Debug.Log("Player un-hovered over " + target.name);
+        var pc = target.GetComponent<PlanetController>();
+        if (pc is null) return;
+        pc.OnHoverExit();
     }
 
     private void OnSelect(InputValue value)
     {
-        bool selected = value.Get<float>() > 0.5f;
-        if (selected)
+        var selected = value.Get<float>() > 0.5f;
+        if (selected && _target is not null)
         {
-            var target = GetMouseTarget(_camera);
-            if (target)
-            {
-                Debug.Log("Player clicked on " + target.name);
-            }
+            var pc = _target.GetComponent<PlanetController>();
+            if (pc is null) return;
+            pc.OnSelect();
         }
     }
-    
+
     private Transform GetMouseTarget(Camera cam)
     {
         var ray = cam.ScreenPointToRay(_mousePosition);

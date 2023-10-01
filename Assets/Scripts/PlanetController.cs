@@ -1,34 +1,45 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlanetController : MonoBehaviour
 {
-	public int planetID;
-	private Animator animator;
+    public int planetID;
+    private Animator animator;
 
-
-	// Start is called before the first frame update
-	void Start()
+    private void Awake()
     {
-		animator = GetComponent<Animator>();
-	}
-
-	private void Awake()
-	{
-		animator = GetComponent<Animator>();
-	}
-
-	// Update is called once per frame
-	void Update()
-    {
-        
+        animator = GetComponent<Animator>();
     }
 
-	public void Initialize(float animSpeed, float animOffset)
-	{
-		// Set animation parameters
-		animator.speed = animSpeed;
-		animator.SetFloat("AnimatorCycleOffset", animOffset);
-	}
+
+    // Start is called before the first frame update
+    private void Start()
+    {
+        animator = GetComponent<Animator>();
+    }
+
+    // Update is called once per frame
+    private void Update()
+    {
+    }
+
+    public void Initialize(float animSpeed, float animOffset)
+    {
+        // Set animation parameters
+        animator.speed = animSpeed;
+        animator.SetFloat("AnimatorCycleOffset", animOffset);
+    }
+
+    public void OnHoverEnter()
+    {
+    }
+
+    public void OnHoverExit()
+    {
+    }
+
+    public void OnSelect()
+    {
+        var spaceshipController = GameController.GetSpaceshipController();
+        spaceshipController.GetComponent<SpaceShipController>().TravelTo(gameObject);
+    }
 }

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Random = UnityEngine.Random;
 
 public class PlanetSpawner : MonoBehaviour
@@ -26,6 +27,8 @@ public class PlanetSpawner : MonoBehaviour
 	public float range = 7; // Maximum range from spaceship
 	private List<Vector3> usedPositions = new List<Vector3>();
 	private float probOutsideRange = 0.05f;
+
+	[SerializeField] private UnityEvent onPlanetsSpawned = new();
 
 	void Start()
 	{
@@ -58,6 +61,8 @@ public class PlanetSpawner : MonoBehaviour
 			// Update the current position for the next planet
 			currentPosition = GenerateRandomPosition(currentPosition);
 		}
+		
+		onPlanetsSpawned.Invoke();
 	}
 
 	// Generate a random position within the constraints

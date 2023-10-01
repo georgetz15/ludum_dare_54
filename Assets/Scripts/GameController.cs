@@ -17,6 +17,22 @@ public class GameController : MonoBehaviour
     public static IEnumerable<GameObject> GetObjectsInLayer(LayerMask layerMask)
     {
         var objs = new List<GameObject>(FindObjectsOfType<GameObject>());
-        return objs.Where(obj => layerMask == (layerMask | (1 << obj.layer)));
+        return objs.Where(obj => IsInLayerMask(obj.layer, layerMask));
+    }
+
+    public static bool IsInLayerMask(LayerMask layer, LayerMask mask)
+    {
+        return mask == (mask | (1 << layer));
+    }
+
+    public static bool IsInPlanetsLayer(LayerMask layer)
+    {
+        var layerMask = LayerMask.GetMask("Planets");
+        return IsInLayerMask(layer, layerMask);
+    }
+
+    public static GameObject GetSpaceshipController()
+    {
+        return GameObject.FindGameObjectWithTag("SpaceshipController");
     }
 }
