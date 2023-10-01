@@ -23,11 +23,7 @@ public class ListItemUIController : MonoBehaviour
 		{
 			var invCtrl = GameObject.FindWithTag("InventoryController")?.GetComponent<InventoryController>();
 			if (invCtrl is null) return;
-
-            for (int i = 0; i < cargoQuantity; ++i)
-            {
-                invCtrl.AddItem(cargoItem);
-            }
+            invCtrl.AddItem(cargoItem, cargoQuantity);
 		});
 	}
 	public void SetListItem(PlayerTasks task)
