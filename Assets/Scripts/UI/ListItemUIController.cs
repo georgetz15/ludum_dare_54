@@ -14,9 +14,17 @@ public class ListItemUIController : MonoBehaviour, IPointerEnterHandler, IPointe
     [SerializeField] private TMP_Text toPlanetText;
     [SerializeField] private TMP_Text rewardText;
     [SerializeField] private TMP_Text deadlineText;
-    [SerializeField] private CargoItem cargoItem;
+	[SerializeField] private TMP_Text cargoText;
+	[SerializeField] private TMP_Text statusText;
+
+	[SerializeField] private CargoItem cargoItem;
     [SerializeField] private int cargoQuantity;
-    private PlayerTask _task;
+
+    [SerializeField] private Sprite activeSprite;
+    [SerializeField] private Sprite inactiveSprite;
+	[SerializeField] private Sprite availableSprite;
+
+	private PlayerTask _task;
 
 	private void Awake()
 	{
@@ -37,6 +45,8 @@ public class ListItemUIController : MonoBehaviour, IPointerEnterHandler, IPointe
 					messageBox.DisplayMsg("You are not standing at the start planet for this quest...");
                     break;
                 case TaskErrorCode.OK:
+                    taskCtrl.SetTaskActive(_task);
+					SetStatus(_task);
 					invCtrl.AddItem(cargoItem, cargoQuantity);
                     break;
                 default:
@@ -44,6 +54,28 @@ public class ListItemUIController : MonoBehaviour, IPointerEnterHandler, IPointe
             }
 		});
 	}
+	
+    public void SetStatus(PlayerTask task)
+    {   
+        var state = task.Status;
+        var image = GetComponent<Image>();
+        switch (state)
+        {
+            case TaskStatus.AVAILABLE:
+                image.sprite = availableSprite;
+                break;
+            case TaskStatus.ACTIVE:
+                image.sprite = activeSprite;
+				break;
+            case TaskStatus.INACTIVE:
+                image.sprite = inactiveSprite;
+                break;
+            default:
+                break;
+        }
+		statusText.text = $"Status: {GetTaskStatusStr()}";
+	}
+
 	public void SetListItem(PlayerTask task)
     {
         _task = task;
@@ -53,10 +85,26 @@ public class ListItemUIController : MonoBehaviour, IPointerEnterHandler, IPointe
         toPlanetText.text = $"To: {task.PlanetTo.name}";
         rewardText.text = $"Reward: {100} credits";
         deadlineText.text = $"Deadline: {task.DeliveryTick} parsecs";
+        cargoText.text = $"Cargo: {task.CargoUnits} units";
+        statusText.text = $"Status: {GetTaskStatusStr()}";
+
         cargoItem = task.CargoItem;
         cargoQuantity = task.CargoUnits;
     }
 
+    private string GetTaskStatusStr()
+    {
+        switch (_task.Status)
+        {
+            case TaskStatus.ACTIVE:
+                return "Active";
+            case TaskStatus.AVAILABLE:
+            case TaskStatus.INACTIVE:
+                return "Inactive";
+            default:
+                return "";
+        }
+    }
     private void OnHoverEnter()
     {
         _task.PlanetFrom.GetComponent<PlanetController>()?.ShowGlow(PlanetController.GlowType.From);

@@ -20,7 +20,7 @@ public class SpaceShipController : MonoBehaviour
     [SerializeField] private UnityEvent<Transform> onTravelFinished = new();
     [SerializeField] private GameObject gameController;
     private Queue<Transform> _path = new Queue<Transform>();
-    [SerializeField] private UnityEvent onPathTravelFinished = new();
+    [SerializeField] private UnityEvent<GameObject> onPathTravelFinished = new();
 
     [SerializeField] private UnityEvent<int> onCargoUpgraded = new();
     [SerializeField] private UnityEvent<float> onRangeUpgraded = new();
@@ -90,7 +90,7 @@ public class SpaceShipController : MonoBehaviour
         _path.TryDequeue(out var dest);
         if (dest is null)
         {
-            onPathTravelFinished.Invoke();
+            onPathTravelFinished.Invoke(CurrentPlanet);
             return;
         }
 

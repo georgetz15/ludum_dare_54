@@ -60,7 +60,8 @@ public class TaskController : MonoBehaviour
             StartDateIssued = 0,
             DeliveryTick = 10,
             CargoItem = item,
-            Reward = Random.Range(2, 10) * 10
+            Reward = Random.Range(2, 10) * 10,
+            Status = TaskStatus.INACTIVE
         };
         _tasks.Add(newTask);
 
@@ -103,6 +104,7 @@ public class TaskController : MonoBehaviour
 
     public void SetTaskActive(PlayerTask task)
     {
+        task.Status = TaskStatus.ACTIVE;
         _activeTasks.Add(task);
     }
 
@@ -113,6 +115,22 @@ public class TaskController : MonoBehaviour
 
         onTaskComplete.Invoke(task);
     }
+
+    public void DisableNonActiveTasks()
+    {
+        var scrollViewCtrl = ScrollViewContentController.Instance;
+        if (scrollViewCtrl is null) return;
+	    var nonActiveTasks = _tasks.Where(task =>!_activeTasks.Contains(task)).ToList();
+        scrollViewCtrl.MakeTasksInactive(nonActiveTasks);
+	}
+
+    public void EnableTasksForPlanet(GameObject planet)
+    {
+        var tasksForPlanet = _tasks.Where(task => (task.PlanetFrom == planet && !_activeTasks.Contains(task))).ToList();
+		var scrollViewCtrl = ScrollViewContentController.Instance;
+		if (scrollViewCtrl is null) return;
+        scrollViewCtrl.MakeTasksAvailable(tasksForPlanet);
+	}
 
     public List<PlayerTask> GetTasksWithPlanetFrom(GameObject planetFrom)
     {

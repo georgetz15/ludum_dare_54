@@ -8,10 +8,18 @@ public class ScrollViewContentController : MonoBehaviour
     [SerializeField] private GameObject listItemPrefab;
 
     private Dictionary<PlayerTask, GameObject> _tasks = new();
+    public static ScrollViewContentController Instance;
 
-    // Start is called before the first frame update
-    void Awake()
+	// Start is called before the first frame update
+	void Awake()
     {
+        if (Instance == null)
+        {
+            Instance = this;
+        } else
+        {
+            Destroy(gameObject);
+        }
     }
 
     // Update is called once per frame
@@ -32,5 +40,26 @@ public class ScrollViewContentController : MonoBehaviour
         _tasks[task].GetComponent<ListItemUIController>().OnPointerExit(null);
         Destroy(_tasks[task]);
         _tasks.Remove(task);
+    }
+    
+
+    public void MakeTasksInactive(List<PlayerTask> tasks)
+    {
+		foreach (var task in tasks)
+		{
+			task.Status = Tasks.TaskStatus.INACTIVE;
+			_tasks[task].GetComponent<ListItemUIController>().SetStatus(task);
+
+		}
+	}
+
+    public void MakeTasksAvailable(List<PlayerTask> tasks)
+    {
+        foreach (var task in tasks)
+        {
+            task.Status = Tasks.TaskStatus.AVAILABLE;
+            _tasks[task].GetComponent<ListItemUIController>().SetStatus(task);
+
+		}
     }
 }

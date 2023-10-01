@@ -1,6 +1,6 @@
 
-using System;
 using UnityEngine;
+using Tasks;
 
 namespace Models
 {
@@ -15,5 +15,7 @@ namespace Models
         public CargoItem CargoItem { get; set; }
         public string QuestDescription { get; set; }
         public int Reward { get; set; }
+
+        public TaskStatus Status { get; set; }
     } 
 }
