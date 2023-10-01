@@ -23,7 +23,7 @@ public class ListItemUIController : MonoBehaviour
         
     }
 
-    public void SetListItem(PLayerTasks task)
+    public void SetListItem(PlayerTasks task)
     {
         titleText.text = task.CargoName;
         fromPlanetText.text = $"From: {task.PlanetFrom.name}";
