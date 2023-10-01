@@ -12,5 +12,4 @@ namespace Tasks
 		INVALID_TASK,
 		ALREADY_ACTIVE,
 	}
-
 }
