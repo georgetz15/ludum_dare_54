@@ -110,7 +110,7 @@ public class SpaceShipController : MonoBehaviour
         }
 
         Cargo = 0;
-        Credits = 300;
+        Credits = 0;
     }
 
     // Update is called once per frame

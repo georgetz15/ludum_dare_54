@@ -60,10 +60,9 @@ public class TaskController : MonoBehaviour
             StartDateIssued = 0,
             DeliveryTick = 10,
             CargoItem = item,
-            Reward = Random.Range(20, 100)
+            Reward = Random.Range(2, 10) * 10
         };
         _tasks.Add(newTask);
-        SetTaskActive(newTask); // TODO: rm
 
         Debug.Log($"new task name {taskDescription}");
 
