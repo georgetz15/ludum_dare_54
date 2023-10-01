@@ -114,6 +114,8 @@ public class TaskController : MonoBehaviour
     {
         task.Status = TaskStatus.ACTIVE;
         _activeTasks.Add(task);
+        
+        onTaskActivated.Invoke(task);
     }
 
     public void CompleteTask(PlayerTask task)
