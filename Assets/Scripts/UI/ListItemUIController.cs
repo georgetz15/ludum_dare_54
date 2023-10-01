@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ListItemUIController : MonoBehaviour
+public class ListItemUIController : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     [SerializeField] private TMP_Text titleText;
     [SerializeField] private TMP_Text fromPlanetText;
@@ -45,34 +45,27 @@ public class ListItemUIController : MonoBehaviour
         deadlineText.text = $"Deadline: {task.DeliveryTick} parsecs";
         cargoItem = task.CargoItem;
         cargoQuantity = task.CargoUnits;
-
-        // Add hover triggers
-        EventTrigger.Entry hoverEntry = new EventTrigger.Entry()
-        {
-            eventID = EventTriggerType.PointerEnter
-        };
-        hoverEntry.callback.AddListener(_ => { OnHoverEnter(); });
-        
-        EventTrigger.Entry hoverExit = new EventTrigger.Entry()
-        {
-            eventID = EventTriggerType.PointerExit
-        };
-        hoverExit.callback.AddListener(_ => { OnHoverExit(); });
-        
-        EventTrigger eventTrigger = gameObject.AddComponent<EventTrigger>();
-        eventTrigger.triggers.Add(hoverEntry);
-        eventTrigger.triggers.Add(hoverExit);
     }
 
-    public void OnHoverEnter()
+    private void OnHoverEnter()
     {
         _task.PlanetFrom.GetComponent<PlanetController>()?.ShowGlow(PlanetController.GlowType.From);
         _task.PlanetTo.GetComponent<PlanetController>()?.ShowGlow(PlanetController.GlowType.To);
     }
 
-    public void OnHoverExit()
+    private void OnHoverExit()
     {
         _task.PlanetFrom.GetComponent<PlanetController>()?.HideGlow();
         _task.PlanetTo.GetComponent<PlanetController>()?.HideGlow();
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        OnHoverEnter();
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        OnHoverExit();
     }
 }
