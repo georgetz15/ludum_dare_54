@@ -74,6 +74,7 @@ public class PlayerController : MonoBehaviour
     private Transform GetMouseTarget(Camera cam)
     {
         var ray = cam.ScreenPointToRay(_mousePosition);
-        return !Physics.Raycast(ray, out var hit) ? null : hit.transform;
+        bool isOverUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
+        return (isOverUI || !Physics.Raycast(ray, out var hit)) ? null : hit.transform;
     }
 }
