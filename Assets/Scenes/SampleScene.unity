@@ -2628,6 +2628,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1321537526}
+  - component: {fileID: 1321537527}
   - component: {fileID: 1321537525}
   m_Layer: 0
   m_Name: TaskController
@@ -2679,6 +2680,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2044383505}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1321537527
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1321537524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaafff0ad2d87564594eee36e528bf0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cargoMappings:
+  - taskType: 3
+    cargoObjects:
+    - {fileID: 11400000, guid: 4e8d72bc90b073444baa6ff0fbbf534a, type: 2}
 --- !u!1 &1325690185
 GameObject:
   m_ObjectHideFlags: 0
@@ -3920,7 +3937,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1963997965}
   - component: {fileID: 1963997964}
-  - component: {fileID: 1963997966}
   m_Layer: 0
   m_Name: InventoryController
   m_TagString: Untagged
@@ -3941,7 +3957,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Items: []
-  test: {fileID: 0}
   InventoryGridTransform: {fileID: 1627378038}
   ItemPrefab: {fileID: 7824330088289767377, guid: 5155fe3cd2a98864f88dcfa41b156f95, type: 3}
 --- !u!4 &1963997965
@@ -3959,22 +3974,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2044383505}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1963997966
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1963997963}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eaafff0ad2d87564594eee36e528bf0d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  cargoMappings:
-  - taskType: 3
-    cargoObjects:
-    - {fileID: 11400000, guid: 4e8d72bc90b073444baa6ff0fbbf534a, type: 2}
 --- !u!1 &1988036010
 GameObject:
   m_ObjectHideFlags: 0
