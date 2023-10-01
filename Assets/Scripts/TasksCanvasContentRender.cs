@@ -24,7 +24,7 @@ public class TasksCanvasContentRender : MonoBehaviour
         
     }
 
-    public void onTaskCreate(PLayerTasks pLayerTask)
+    public void onTaskCreate(PlayerTasks pLayerTask)
     {
         var item = Instantiate(ListItem);
         item.transform.parent = gameObject.transform;

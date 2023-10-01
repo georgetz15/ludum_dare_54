@@ -268,6 +268,7 @@ public class MapController : MonoBehaviour
         // Case where user hovered to different planet while travelling
         var sc = spaceshipConroller.GetComponent<SpaceShipController>();
         if (sc is null) return;
+        if (!(_cachedPath?.Count > 2)) return;
         _cachedPath =
             new List<Transform>(
                 GetShortestPath(sc.CurrentPlanet.transform,
@@ -290,6 +291,7 @@ public class MapController : MonoBehaviour
         // Case where user hovered to different planet while travelling
         var sc = spaceshipConroller.GetComponent<SpaceShipController>();
         if (sc is null) return;
+        if (!(_cachedPath?.Count > 2)) return;
         _cachedPath =
             new List<Transform>(
                 GetShortestPath(sc.CurrentPlanet.transform,

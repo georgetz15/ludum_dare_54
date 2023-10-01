@@ -21,6 +21,11 @@ public class SpaceShipController : MonoBehaviour
     private Queue<Transform> _path = new Queue<Transform>();
     [SerializeField] private UnityEvent onPathTravelFinished = new();
 
+    [SerializeField] private UnityEvent<int> onCargoUpgraded = new();
+    [SerializeField] private UnityEvent<float> onRangeUpgraded = new();
+    private int _credits = 0;
+    [SerializeField] private UnityEvent<int> onCreditsUpdate = new();
+
     public int MaxCargoCapacity
     {
         get => maxCargoCapacity;
@@ -43,6 +48,16 @@ public class SpaceShipController : MonoBehaviour
         }
     }
 
+    public int Credits
+    {
+        get => _credits;
+        set
+        {
+            _credits = value;
+            onCreditsUpdate.Invoke(_credits);
+        }
+    }
+
     // private GameObject _currentPlane
     public GameObject CurrentPlanet { get; private set; }
 
@@ -57,12 +72,12 @@ public class SpaceShipController : MonoBehaviour
         _path = new Queue<Transform>(path);
         TryTravelNext();
     }
-    
+
     public void TravelTo(GameObject destination)
     {
         if (IsTravelling) return;
         if (destination == CurrentPlanet) return;
-        
+
         // transform.position = destination.transform.position;
         _destination = destination.transform;
         transform.up = _destination.position - transform.position;
@@ -77,28 +92,31 @@ public class SpaceShipController : MonoBehaviour
             onPathTravelFinished.Invoke();
             return;
         }
+
         TravelTo(dest.gameObject);
     }
 
     // Start is called before the first frame update
     private void Awake()
     {
-		if (Instance == null)
-		{
-			Instance = this;
-		}
-		else
-		{
-			Destroy(gameObject);
-		}
-		Cargo = 0;
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        Cargo = 0;
+        Credits = 300;
     }
 
     // Update is called once per frame
     private void FixedUpdate()
     {
         if (!IsTravelling) return;
-        
+
         var step = flyingSpeed * Time.fixedDeltaTime;
         transform.position = Vector3.MoveTowards(transform.position, _destination.position, step);
 
@@ -108,7 +126,7 @@ public class SpaceShipController : MonoBehaviour
             CurrentPlanet = _destination.gameObject;
             IsTravelling = false;
             _destination = null;
-            
+
             onTravelFinished.Invoke(_destination);
             TryTravelNext();
         }
@@ -120,5 +138,17 @@ public class SpaceShipController : MonoBehaviour
         var i = Random.Range(0, planets.Count - 1);
         TravelTo(planets[i]);
         CurrentPlanet = planets[i];
+    }
+
+    public void UpgradeCargo(int addedSlots)
+    {
+        MaxCargoCapacity += addedSlots;
+        onCargoUpgraded.Invoke(MaxCargoCapacity);
+    }
+
+    public void UpgradeRange(float addedRange)
+    {
+        Range += addedRange;
+        onRangeUpgraded.Invoke(Range);
     }
 }
