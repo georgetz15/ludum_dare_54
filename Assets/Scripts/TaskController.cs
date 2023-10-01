@@ -33,15 +33,15 @@ public class TaskController : MonoBehaviour
 	
 		if (onTaskCreate == null)
             onTaskCreate = new UnityEvent<PlayerTask>();
-    }
+	}
 
-    // Update is called once per frame
-    private void Update()
+	// Update is called once per frame
+	private void Update()
     {
-        if (HowManyNewTasksWeNeedToGenerate() > 0) GenerateTasks();
+        if (HowManyNewTasksWeNeedToGenerate() > 0) GenerateTask();
     }
 
-    private void GenerateTasks()
+    private void GenerateTask()
     {
         var maxCargoCapacity = spaceShipController.MaxCargoCapacity;
 		
