@@ -20,10 +20,7 @@ public class TaskController : MonoBehaviour
     private readonly HashSet<PlayerTask> _activeTasks = new();
 
     private List<GameObject> _planets;
-
-
-    [SerializeField] public Dictionary<GameObject, List<PlayerTask>> availableTasks = new();
-
+    
     // Start is called before the first frame update
     private void Awake()
     {
@@ -68,24 +65,9 @@ public class TaskController : MonoBehaviour
         _tasks.Add(newTask);
         SetTaskActive(newTask); // TODO: rm
 
-        AddTask(planetFrom, newTask);
         Debug.Log($"new task name {taskDescription}");
 
         onTaskCreate.Invoke(newTask);
-    }
-
-    private void AddTask(GameObject planetFrom, PlayerTask newTask)
-    {
-        if (availableTasks.ContainsKey(planetFrom))
-        {
-            availableTasks[planetFrom].Add(newTask);
-        }
-        else
-        {
-            var newList = new List<PlayerTask>();
-            newList.Add(newTask);
-            availableTasks.Add(planetFrom, newList);
-        }
     }
 
     private static TaskType GetRandomTaskType()
@@ -117,7 +99,7 @@ public class TaskController : MonoBehaviour
 
     private int HowManyNewTasksWeNeedToGenerate()
     {
-        return _maxNumberOfAvailableTasks - availableTasks.Count;
+        return _maxNumberOfAvailableTasks - _tasks.Count;
     }
 
     public void SetTaskActive(PlayerTask task)
