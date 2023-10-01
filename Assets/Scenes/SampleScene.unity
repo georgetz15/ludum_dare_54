@@ -2696,6 +2696,25 @@ MonoBehaviour:
   - taskType: 3
     cargoObjects:
     - {fileID: 11400000, guid: 4e8d72bc90b073444baa6ff0fbbf534a, type: 2}
+    - {fileID: 11400000, guid: d0eb8372af14c8f40aa805e8b1e3642c, type: 2}
+  - taskType: 1
+    cargoObjects:
+    - {fileID: 11400000, guid: a3afcfac3ee483949abfae137a096f38, type: 2}
+  - taskType: 2
+    cargoObjects:
+    - {fileID: 11400000, guid: 41cc0a4a9c9bcc34c8f13d027d317ceb, type: 2}
+  - taskType: 4
+    cargoObjects:
+    - {fileID: 11400000, guid: a8158b091bed80645bef72212d352dd9, type: 2}
+    - {fileID: 11400000, guid: 99683130d5220784aa8506b87e9c52cc, type: 2}
+    - {fileID: 11400000, guid: b6e8c29029126de47a744f952f278dab, type: 2}
+    - {fileID: 11400000, guid: d389b6a75baa28f4eb746d9cafe9e689, type: 2}
+  - taskType: 7
+    cargoObjects:
+    - {fileID: 11400000, guid: 7eaf51e854c774449aeae9f7e8607b78, type: 2}
+    - {fileID: 11400000, guid: 7f00d8130932708489b3c27c64089993, type: 2}
+    - {fileID: 11400000, guid: 985a0924fac06ab4c8055ac1a0c89e70, type: 2}
+    - {fileID: 11400000, guid: ac26e26e85ee2e44e87444ec1795e8fd, type: 2}
 --- !u!1 &1325690185
 GameObject:
   m_ObjectHideFlags: 0
