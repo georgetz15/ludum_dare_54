@@ -1,20 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CargoItemController : MonoBehaviour
 {
-
-    public CargoItem cargoItem;
-    // Start is called before the first frame update
-    void Start()
+    public void SetImage(Sprite sprite)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        this.transform.Find("Image").GetComponent<Image>().sprite = sprite;
     }
 }

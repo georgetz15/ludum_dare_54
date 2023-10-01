@@ -8,6 +8,7 @@ public class InventoryController : MonoBehaviour
     public static InventoryController Instance;
     public List<CargoItem> Items = new List<CargoItem>();
 
+	public CargoItem test;
 	
 	public Transform InventoryGridTransform;
 	public GameObject ItemPrefab;
@@ -31,10 +32,10 @@ public class InventoryController : MonoBehaviour
 		capacity = SpaceShipController.Instance.MaxCargoCapacity;
 		LoadInventory();
 	}
-
+	
 	public void AddItem(CargoItem item)
 	{
-		if (Items.Count > capacity)
+		if (Items.Count >= capacity)
 		{
 			Debug.LogError("Incorrect handling for quest delegation!! Check the correct storage amount");
 			return;
@@ -66,9 +67,8 @@ public class InventoryController : MonoBehaviour
 		foreach (var item in Items)
 		{
 			GameObject obj = Instantiate(ItemPrefab, InventoryGridTransform);
-			var itemIcon = obj.transform.Find("ItemIcon").GetComponent<Image>();
-
-			itemIcon.sprite = item.icon;
+			CargoItemController itemIconController = obj.GetComponent<CargoItemController>();
+			itemIconController.SetImage(item.icon);
 		}
 
 		for (int i = 0; i < freeSlots; i++)
