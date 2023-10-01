@@ -14,7 +14,7 @@ public class MapController : MonoBehaviour
     private List<GameObject> _cachedEdgesUIObjects = new();
     private List<Transform>? _cachedPath;
 
-    private Dictionary<Transform, HashSet<Transform>> _pathGraph;
+    private Dictionary<Transform, HashSet<Transform>>? _pathGraph;
 
     // Start is called before the first frame update
     private void Start()
