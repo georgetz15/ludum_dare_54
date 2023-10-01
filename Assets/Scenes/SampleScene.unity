@@ -1250,7 +1250,7 @@ MonoBehaviour:
   m_ChildAlignment: 0
   m_StartCorner: 0
   m_StartAxis: 0
-  m_CellSize: {x: 200, y: 50}
+  m_CellSize: {x: 190, y: 50}
   m_Spacing: {x: 5, y: 5}
   m_Constraint: 0
   m_ConstraintCount: 2
@@ -1267,10 +1267,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   availableUpgrades:
-  - {fileID: 11400000, guid: 6bf80521c06921b44951f8bb78fd489b, type: 2}
   - {fileID: 11400000, guid: 276552b75b54961409fd2285e9b1ac18, type: 2}
+  - {fileID: 11400000, guid: 6bf80521c06921b44951f8bb78fd489b, type: 2}
+  - {fileID: 11400000, guid: 6f7a8f117e153704bb7d21cc237d24a6, type: 2}
   - {fileID: 11400000, guid: f3b3ccf35ed2c8e43a85f8bde20277ea, type: 2}
   - {fileID: 11400000, guid: 00ecdfd767741f142a979e5391384379, type: 2}
+  - {fileID: 11400000, guid: b61ecfa0f351ed4439eedcc2ad7a0449, type: 2}
   upgradeUIItem: {fileID: 4946903623448902739, guid: b4ec8d626a4380841a0bd215fd150466, type: 3}
 --- !u!114 &451611970
 MonoBehaviour:
@@ -1798,7 +1800,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
   m_AnchoredPosition: {x: 0, y: 90}
-  m_SizeDelta: {x: 600, y: 400}
+  m_SizeDelta: {x: 600, y: 130}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &789318639
 MonoBehaviour:
