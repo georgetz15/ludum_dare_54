@@ -273,4 +273,26 @@ public class MapController : MonoBehaviour
                     _cachedPath[^1]));
         SetActiveEdgesMaterial(_cachedPath);
     }
+
+    public void DisplayShortestPath(Transform from, Transform to)
+    {
+        var path = new List<Transform>(
+            GetShortestPath(from, to));
+        SetActiveEdgesMaterial(path);
+    }
+
+    public void HideShortestPath()
+    {
+        SetEdgesDefaultMaterial();
+        if (_cachedPath is null) return;
+        
+        // Case where user hovered to different planet while travelling
+        var sc = spaceshipConroller.GetComponent<SpaceShipController>();
+        if (sc is null) return;
+        _cachedPath =
+            new List<Transform>(
+                GetShortestPath(sc.CurrentPlanet.transform,
+                    _cachedPath[^1]));
+        SetActiveEdgesMaterial(_cachedPath);
+    }
 }
