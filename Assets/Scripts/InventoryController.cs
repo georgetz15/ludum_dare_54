@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Models;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -104,5 +105,16 @@ public class InventoryController : MonoBehaviour
 		{
 			Instantiate(ItemPrefab, InventoryGridTransform);
 		}
+	}
+
+	public void OnTaskCompleted(PlayerTask task)
+	{
+		for (int i = 0; i < task.CargoUnits; i++)
+		{
+			Items.Remove(task.CargoItem);
+			SpaceShipController scCtrl = SpaceShipController.Instance;
+			scCtrl.Cargo -= 1;
+		}
+		LoadInventory();
 	}
 }
