@@ -18,6 +18,7 @@ public class SpaceShipController : MonoBehaviour
     [SerializeField] private UnityEvent<Transform> onTravelFinished = new();
     [SerializeField] private GameObject gameController;
     private Queue<Transform> _path = new Queue<Transform>();
+    [SerializeField] private UnityEvent onPathTravelFinished = new();
 
     public int MaxCargoCapacity
     {
@@ -70,7 +71,11 @@ public class SpaceShipController : MonoBehaviour
     private void TryTravelNext()
     {
         _path.TryDequeue(out var dest);
-        if (dest is null) return;
+        if (dest is null)
+        {
+            onPathTravelFinished.Invoke();
+            return;
+        }
         TravelTo(dest.gameObject);
     }
 

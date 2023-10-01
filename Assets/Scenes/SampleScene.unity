@@ -214,6 +214,36 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  onPlanetHoverEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 471993911}
+        m_TargetAssemblyTypeName: MapController, Assembly-CSharp
+        m_MethodName: OnPlanetHoverEnter
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onPlanetHoverExit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 471993911}
+        m_TargetAssemblyTypeName: MapController, Assembly-CSharp
+        m_MethodName: OnPlanetHoverExit
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &99716808
 GameObject:
   m_ObjectHideFlags: 0
@@ -752,6 +782,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   edgePrefab: {fileID: 7282043070000830491, guid: 097b8d2b6931a994fa7d51c4707d38de, type: 3}
   lineWidth: 0.1
+  spaceshipConroller: {fileID: 1198911362}
+  edgeMaterial: {fileID: 2100000, guid: 0e11426fb5f6a0242b3744cb7ee40f4c, type: 2}
+  activeEdgeMaterial: {fileID: 2100000, guid: 402aea4a0494a334eb01f35090c88a52, type: 2}
 --- !u!4 &471993912
 Transform:
   m_ObjectHideFlags: 0
@@ -1385,6 +1418,21 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   gameController: {fileID: 2044383503}
+  onPathTravelFinished:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 471993911}
+        m_TargetAssemblyTypeName: MapController, Assembly-CSharp
+        m_MethodName: OnSpaceshipPathTravelFinished
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &1198911364
 Transform:
   m_ObjectHideFlags: 0

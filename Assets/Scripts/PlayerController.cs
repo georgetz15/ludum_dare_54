@@ -9,6 +9,8 @@ public class PlayerController : MonoBehaviour
     private Transform _target;
 
     [SerializeField] private UnityEvent<GameObject> onPlanetSelected = new();
+    [SerializeField] private UnityEvent<Transform> onPlanetHoverEnter = new();
+    [SerializeField] private UnityEvent<Transform> onPlanetHoverExit = new();
 
     // Start is called before the first frame update
     private void Start()
@@ -45,6 +47,7 @@ public class PlayerController : MonoBehaviour
         var pc = target.GetComponent<PlanetController>();
         if (pc is null) return;
         pc.OnHoverEnter();
+        onPlanetHoverEnter.Invoke(target);
     }
 
     private void OnHoverExit(Transform target)
@@ -53,6 +56,7 @@ public class PlayerController : MonoBehaviour
         var pc = target.GetComponent<PlanetController>();
         if (pc is null) return;
         pc.OnHoverExit();
+        onPlanetHoverExit.Invoke(target);
     }
 
     private void OnSelect(InputValue value)
