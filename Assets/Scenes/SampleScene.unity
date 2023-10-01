@@ -783,7 +783,7 @@ MonoBehaviour:
   edgePrefab: {fileID: 7282043070000830491, guid: 097b8d2b6931a994fa7d51c4707d38de, type: 3}
   lineWidth: 0.1
   spaceshipConroller: {fileID: 1198911362}
-  edgeMaterial: {fileID: 2100000, guid: 0e11426fb5f6a0242b3744cb7ee40f4c, type: 2}
+  edgeMaterial: {fileID: 2100000, guid: 4fa22d7a5c4bee44d9ee43a2c363e899, type: 2}
   activeEdgeMaterial: {fileID: 2100000, guid: 402aea4a0494a334eb01f35090c88a52, type: 2}
 --- !u!4 &471993912
 Transform:
