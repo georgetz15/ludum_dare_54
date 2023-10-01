@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Go get some iron Nigga
+  m_text: Go get some iron Maaan
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e9c5d5496ee435c41b01c8b49b8bca26, type: 2}
   m_sharedMaterial: {fileID: 2030537662875834869, guid: e9c5d5496ee435c41b01c8b49b8bca26, type: 2}

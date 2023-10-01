@@ -12,6 +12,7 @@ public class TaskController : MonoBehaviour
 
     [SerializeField] public UnityEvent<PlayerTask> onTaskCreate;
     [SerializeField] private UnityEvent<PlayerTask> onTaskComplete = new();
+    [SerializeField] private UnityEvent<PlayerTask> onTaskActivated = new();
 
 
     private readonly int _maxNumberOfAvailableTasks = 12;
@@ -109,6 +110,7 @@ public class TaskController : MonoBehaviour
     {
         task.Status = TaskStatus.ACTIVE;
         _activeTasks.Add(task);
+        onTaskActivated.Invoke(task);
     }
 
     public void CompleteTask(PlayerTask task)
