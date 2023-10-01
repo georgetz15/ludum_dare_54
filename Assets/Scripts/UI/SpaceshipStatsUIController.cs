@@ -36,6 +36,6 @@ public class SpaceshipStatsUIController : MonoBehaviour
 
     public void OnCreditsChanged(int credits)
     {
-        dateText.text = $"Credits: {credits}";
+        creditsText.text = $"Credits: {credits}";
     }
 }
