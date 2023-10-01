@@ -3920,6 +3920,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1963997965}
   - component: {fileID: 1963997964}
+  - component: {fileID: 1963997966}
   m_Layer: 0
   m_Name: InventoryController
   m_TagString: Untagged
@@ -3958,6 +3959,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2044383505}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1963997966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1963997963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaafff0ad2d87564594eee36e528bf0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  cargoMappings:
+  - taskType: 3
+    cargoObjects:
+    - {fileID: 11400000, guid: 4e8d72bc90b073444baa6ff0fbbf534a, type: 2}
 --- !u!1 &1988036010
 GameObject:
   m_ObjectHideFlags: 0

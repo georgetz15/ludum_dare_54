@@ -1,5 +1,6 @@
 
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Tasks
 {
@@ -14,7 +15,7 @@ namespace Tasks
 		ROBOTS,
 		SCIENCE,
 	}
-
+	
 	public class TaskDescriptions
 	{
 		private static Dictionary<TaskType, string> _desc = new Dictionary<TaskType, string>() {

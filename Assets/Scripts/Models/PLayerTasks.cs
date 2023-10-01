@@ -14,6 +14,5 @@ namespace Models
         public int DeliveryTick { get; set; }
         public CargoItem CargoItem { get; set; }
         public string QuestDescription { get; set; }
-        // TODO: Add cargo prefab, quest desc and status enum
     } 
 }

@@ -35,15 +35,14 @@ public class TaskController : MonoBehaviour
     {
         var maxCargoCapacity = spaceShipController.MaxCargoCapacity;
 		
-        // Get random task type and description
-        var taskTypesArray = typeof(TaskType).GetEnumValues();
-		var randomCargoTypeIndex = Random.Range(0, taskTypesArray.Length - 1);
-        TaskType taskType = (TaskType) taskTypesArray.GetValue(randomCargoTypeIndex);
-        var taskDescription = TaskDescriptions.GetDescriptions()[taskType];
+        var taskType = GetRandomTaskType();
+        var taskDescription = GetTaskDescription(taskType);
 
 		_planets = MapController.GetPlanets().ToList();
         var planetFrom = _planets[Random.Range(0, _planets.Count - 1)];
         var planetTo = _planets.Where(x => x != planetFrom).ToList()[Random.Range(0, _planets.Count - 2)];
+       
+        CargoItem item = GetComponent<CargoAssigner>().GetItemForType(TaskType.POWER_GENERATION);
         var newTask = new PlayerTasks
         {
             CargoName = taskDescription,
@@ -51,15 +50,30 @@ public class TaskController : MonoBehaviour
             PlanetFrom = planetFrom,
             PlanetTo = planetTo,
             StartDateIssued = 0,
-            DeliveryTick = 10
+            DeliveryTick = 10,
+            CargoItem = item,
         };
+
         availableTasks.Add(newTask);
         Debug.Log($"new task name {taskDescription}");
 
         onTaskCreate.Invoke(newTask);
     }
 
-    private int HowManyNewTasksWeNeedToGenerate()
+	private static TaskType GetRandomTaskType()
+	{
+		var taskTypesArray = typeof(TaskType).GetEnumValues();
+		var randomCargoTypeIndex = Random.Range(0, taskTypesArray.Length - 1);
+		TaskType taskType = (TaskType)taskTypesArray.GetValue(randomCargoTypeIndex);
+		return taskType;
+	}
+
+	private static string GetTaskDescription(TaskType taskType)
+    {
+		return TaskDescriptions.GetDescriptions()[taskType];
+
+	}
+	private int HowManyNewTasksWeNeedToGenerate()
     {
         return _maxNumberOfAvailableTasks - availableTasks.Count;
     }

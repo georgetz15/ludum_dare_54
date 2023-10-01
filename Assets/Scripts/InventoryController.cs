@@ -8,8 +8,6 @@ public class InventoryController : MonoBehaviour
     public static InventoryController Instance;
     public List<CargoItem> Items = new List<CargoItem>();
 
-	public CargoItem test;
-	
 	public Transform InventoryGridTransform;
 	public GameObject ItemPrefab;
 	
@@ -33,14 +31,30 @@ public class InventoryController : MonoBehaviour
 		LoadInventory();
 	}
 	
-	public void AddItem(CargoItem item)
+	private void AssertCapacity()
 	{
 		if (Items.Count >= capacity)
 		{
 			Debug.LogError("Incorrect handling for quest delegation!! Check the correct storage amount");
 			return;
 		}
+	}
+
+	public void AddItem(CargoItem item)
+	{
+		AssertCapacity();
 		Items.Add(item);
+		LoadInventory();
+	}
+
+	public void AddItem(CargoItem item, int qty)
+	{
+		for (int i = 0; i < qty; i++)
+		{
+			AssertCapacity();
+			Items.Add(item);
+		}
+		LoadInventory();
 	}
 
 	public void RemoveItem(CargoItem item)

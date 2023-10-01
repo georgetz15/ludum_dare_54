@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using Models;
+using UnityEngine.UI;
+using ScriptableObjects;
 
 public class ListItemUIController : MonoBehaviour
 {
@@ -11,24 +13,31 @@ public class ListItemUIController : MonoBehaviour
     [SerializeField] private TMP_Text toPlanetText;
     [SerializeField] private TMP_Text rewardText;
     [SerializeField] private TMP_Text deadlineText;
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	[SerializeField] private CargoItem cargoItem;
+    [SerializeField] private int cargoQuantity;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	private void Awake()
+	{
+		var btn = GetComponent<Button>();
+		btn.onClick.AddListener(delegate
+		{
+			var invCtrl = GameObject.FindWithTag("InventoryController")?.GetComponent<InventoryController>();
+			if (invCtrl is null) return;
 
-    public void SetListItem(PlayerTasks task)
+            for (int i = 0; i < cargoQuantity; ++i)
+            {
+                invCtrl.AddItem(cargoItem);
+            }
+		});
+	}
+	public void SetListItem(PlayerTasks task)
     {
         titleText.text = task.CargoName;
         fromPlanetText.text = $"From: {task.PlanetFrom.name}";
         toPlanetText.text = $"To: {task.PlanetTo.name}";
         rewardText.text = $"Reward: {100} credits";
         deadlineText.text = $"Deadline: {task.DeliveryTick} parsecs";
+        cargoItem = task.CargoItem;
+        cargoQuantity = task.CargoUnits;
     }
 }

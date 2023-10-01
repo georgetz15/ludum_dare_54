@@ -487,6 +487,7 @@ MonoBehaviour:
   toPlanetText: {fileID: 4277052518427128842}
   rewardText: {fileID: 1842004977937685921}
   deadlineText: {fileID: 9056728084012769487}
+  cargoItem: {fileID: 0}
 --- !u!114 &7535011360197801814
 MonoBehaviour:
   m_ObjectHideFlags: 0
