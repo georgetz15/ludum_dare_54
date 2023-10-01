@@ -36,7 +36,7 @@ public class PlanetSpawner : MonoBehaviour
 		GeneratePlanets();
 	}
 
-	void GeneratePlanets()
+	public void GeneratePlanets()
 	{
 		// Create a list of positions to track where planets are placed
 		Vector3 currentPosition = initialPosition;

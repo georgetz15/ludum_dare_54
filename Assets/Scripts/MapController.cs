@@ -17,17 +17,21 @@ public class MapController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        // Create the path graph and show edges to the screen
-        // TODO: move this out of update when we're done with tuning
-        CleanupGraph();
-        UpdatePathGraph();
-        var edges = GetEdges(_pathGraph);
-        foreach (var edge in edges)
-        {
-            Debug.Log($"Found edge {edge.Item1.name}, {edge.Item2.name}");
-            CreateEdgeObject(edge.Item1, edge.Item2);
-        }
+       
     }
+
+    public void GenerateGraph()
+    {
+		// Create the path graph and show edges to the screen
+		CleanupGraph();
+		UpdatePathGraph();
+		var edges = GetEdges(_pathGraph);
+		foreach (var edge in edges)
+		{
+			Debug.Log($"Found edge {edge.Item1.name}, {edge.Item2.name}");
+			CreateEdgeObject(edge.Item1, edge.Item2);
+		}
+	}
 
     private static IEnumerable<Tuple<Transform, Transform>> GetEdges(
         Dictionary<Transform, HashSet<Transform>> pathGraph)
