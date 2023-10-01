@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
@@ -6,6 +7,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Camera _camera;
     private Vector2 _mousePosition;
     private Transform _target;
+
+    [SerializeField] private UnityEvent<GameObject> onPlanetSelected = new();
 
     // Start is called before the first frame update
     private void Start()
@@ -59,6 +62,7 @@ public class PlayerController : MonoBehaviour
         {
             var pc = _target.GetComponent<PlanetController>();
             if (pc is null) return;
+            onPlanetSelected.Invoke(_target.gameObject);
             pc.OnSelect();
         }
     }

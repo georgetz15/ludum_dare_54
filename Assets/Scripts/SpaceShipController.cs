@@ -42,6 +42,7 @@ public class SpaceShipController : MonoBehaviour
 
     public void TravelTo(GameObject destination)
     {
+        if (IsTravelling) return;
         if (destination == CurrentPlanet) return;
         
         // transform.position = destination.transform.position;

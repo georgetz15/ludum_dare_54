@@ -39,7 +39,5 @@ public class PlanetController : MonoBehaviour
 
     public void OnSelect()
     {
-        var spaceshipController = GameController.GetSpaceshipController();
-        spaceshipController.GetComponent<SpaceShipController>().TravelTo(gameObject);
     }
 }
