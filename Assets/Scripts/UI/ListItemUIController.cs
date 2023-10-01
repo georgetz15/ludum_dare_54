@@ -85,7 +85,7 @@ public class ListItemUIController : MonoBehaviour, IPointerEnterHandler, IPointe
         fromPlanetText.text = $"From: {task.PlanetFrom.name}";
         toPlanetText.text = $"To: {task.PlanetTo.name}";
         rewardText.text = $"Reward: {task.Reward} credits";
-        deadlineText.text = $"Deadline: {task.DeliveryTick} parsecs";
+        deadlineText.text = $"Deadline: {task.Deadline} days";
         cargoText.text = $"Cargo: {task.CargoUnits} units";
         statusText.text = $"Status: {GetTaskStatusStr()}";
 
