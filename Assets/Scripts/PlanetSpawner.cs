@@ -117,7 +117,7 @@ public class PlanetSpawner : MonoBehaviour
 			}
 
 			// Check for the 5% chance of falling outside the range
-			bool isOutsideRange = Random.Range(0f, 1f) <= 0.05f;
+			bool isOutsideRange = Random.Range(0f, 1f) <= probOutsideRange;
 
 			if (!isCollision && isSpacingValid && !isOutsideRange)
 			{

@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Models
 {
-    public class PLayerTasks 
+    public class PLayerTasks
     {
         public string CargoName { get; set; }
         public int CargoUnits { get; set; }
@@ -12,5 +12,7 @@ namespace Models
         public GameObject PlanetTo { get; set; }
         public int StartDateIssued { get; set; }
         public int DeliveryTick { get; set; }
-    }
+
+        // TODO: Add cargo prefab, quest desc and status enum
+    } 
 }
