@@ -1440,7 +1440,7 @@ MonoBehaviour:
   maxAnimSpeed: 0.3
   minAnimCycleOffset: 0
   maxAnimCycleOffset: 1
-  range: 5
+  range: 4.5
   onPlanetsSpawned:
     m_PersistentCalls:
       m_Calls:
@@ -2744,7 +2744,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24f480c7b9067b44da53b6bf1ad58033, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 3
+  range: 3.5
   maxCargoCapacity: 50
   onCargoChanged:
     m_PersistentCalls:

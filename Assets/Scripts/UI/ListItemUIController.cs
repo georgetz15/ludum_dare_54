@@ -1,4 +1,5 @@
 using Models;
+using Tasks;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -21,24 +22,26 @@ public class ListItemUIController : MonoBehaviour, IPointerEnterHandler, IPointe
 	{
 		var btn = GetComponent<Button>();
 		btn.onClick.AddListener(delegate
-		{
+        {
             var invCtrl = InventoryController.Instance;
-			if (invCtrl is null) return;
+            if (invCtrl is null) return;
             var taskCtrl = TaskController.Instance;
             if (taskCtrl is null) return;
-
-            if (!taskCtrl.CanAcceptMission(cargoQuantity))
+	    	var messageBox = MessageBox.Instance;
+            switch (taskCtrl.CanAcceptMission(_task))
             {
-                var messageBox = MessageBox.Instance;
-                if (messageBox is null)
-                {
-                    messageBox = new MessageBox();
-                };
-
-                messageBox.DisplayMsg("Your space is too limited for this cargo, sorry...");
-                return;
+                case TaskErrorCode.INSUFFICIENT_SPACE:
+                    messageBox.DisplayMsg("Your space is too limited for this cargo, sorry...");
+                    break;
+                case TaskErrorCode.INVALID_START_PLANET:
+					messageBox.DisplayMsg("You are not standing at the start planet for this quest...");
+                    break;
+                case TaskErrorCode.OK:
+					invCtrl.AddItem(cargoItem, cargoQuantity);
+                    break;
+                default:
+                    break;
             }
-            invCtrl.AddItem(cargoItem, cargoQuantity);
 		});
 	}
 	public void SetListItem(PlayerTask task)
