@@ -9,11 +9,16 @@ public class GameController : MonoBehaviour
     public MapController mapController;
 
     [SerializeField] private UnityEvent<int> onDateChanged = new();
-
+    
+    public static GameController Instance;
     public int Date { get; private set; } = 0;
 
-    // Start is called before the first frame update
-    private void Start()
+	private void Awake()
+	{
+		Instance = this;
+	}
+	// Start is called before the first frame update
+	private void Start()
 
     {
         planetSpawner.GeneratePlanets();

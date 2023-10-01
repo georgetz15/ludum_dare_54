@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Models;
 using Tasks;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -13,6 +14,7 @@ public class TaskController : MonoBehaviour
     [SerializeField] public UnityEvent<PlayerTask> onTaskCreate;
     [SerializeField] private UnityEvent<PlayerTask> onTaskComplete = new();
     [SerializeField] private UnityEvent<PlayerTask> onTaskActivated = new();
+	[SerializeField] private UnityEvent<PlayerTask> onTaskCancelled = new();
 
 
     private readonly int _maxNumberOfAvailableTasks = 12;
@@ -52,14 +54,17 @@ public class TaskController : MonoBehaviour
         var planetTo = _planets.Where(x => x != planetFrom).ToList()[Random.Range(0, _planets.Count - 2)];
 
         var item = GetComponent<CargoAssigner>().GetItemForType(taskType);
-        var newTask = new PlayerTask
+        var startDate = GameController.Instance.Date;
+        var endDate = GameController.Instance.Date + Random.Range(2, 10);
+		var newTask = new PlayerTask
         {
             CargoName = taskDescription,
             CargoUnits = Random.Range(1, maxCargoCapacity),
             PlanetFrom = planetFrom,
             PlanetTo = planetTo,
-            StartDateIssued = 0,
-            DeliveryTick = 10,
+            StartDate = startDate,
+            EndDate = endDate,
+			Deadline = endDate - startDate,
             CargoItem = item,
             Reward = Random.Range(2, 10) * 10,
             Status = TaskStatus.INACTIVE
@@ -121,6 +126,17 @@ public class TaskController : MonoBehaviour
         onTaskComplete.Invoke(task);
     }
 
+    public void CancelTask(PlayerTask task)
+    {
+        _tasks.Remove(task);
+        if (_activeTasks.Contains(task))
+        {
+            _activeTasks.Remove(task);
+        }
+
+        onTaskCancelled.Invoke(task);
+    }
+
     public void DisableNonActiveTasks()
     {
         var scrollViewCtrl = ScrollViewContentController.Instance;
@@ -146,5 +162,29 @@ public class TaskController : MonoBehaviour
     {
         foreach (var task in _activeTasks.Where(task => task.PlanetTo == planetTo.gameObject).ToList())
             CompleteTask(task);
+    }
+
+    public void UpdateTaskDates(int currentDate)
+    {
+		var scrollViewCtrl = ScrollViewContentController.Instance;
+        List<PlayerTask> cancelQueue = new List<PlayerTask>();
+
+		foreach (var task in _tasks)
+        {
+            var remaining = task.EndDate - currentDate;
+            if (remaining <= 0)
+            {
+                cancelQueue.Add(task);
+            } else
+            {
+                task.Deadline = remaining;
+                scrollViewCtrl.UpdateTask(task);
+            }
+        }
+
+        foreach (var task in cancelQueue)
+        {
+            CancelTask(task);
+        }
     }
 }
