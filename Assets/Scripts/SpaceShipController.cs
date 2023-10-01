@@ -6,8 +6,9 @@ using UnityEngine.Events;
 
 public class SpaceShipController : MonoBehaviour
 {
+    public static SpaceShipController Instance;
     [SerializeField] private float range = 5.0f;
-    [SerializeField] private int maxCargoCapacity = 6;
+    [SerializeField] private int maxCargoCapacity = 50;
 
     [SerializeField] private UnityEvent onCargoChanged;
     private int _cargo;
@@ -82,7 +83,15 @@ public class SpaceShipController : MonoBehaviour
     // Start is called before the first frame update
     private void Awake()
     {
-        Cargo = 0;
+		if (Instance == null)
+		{
+			Instance = this;
+		}
+		else
+		{
+			Destroy(gameObject);
+		}
+		Cargo = 0;
     }
 
     // Update is called once per frame
