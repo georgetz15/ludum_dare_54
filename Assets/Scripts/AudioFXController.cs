@@ -11,12 +11,14 @@ public class AudioFXController : MonoBehaviour
 
 	public void PlayTaskComplete()
 	{
+		if (audioPlayer.isPlaying) return;
 		audioPlayer.clip = taskCompleteSFX;
 		audioPlayer.Play();
 	}
 
 	public void PlayTaskCancel()
 	{
+		if (audioPlayer.isPlaying) return;
 		audioPlayer.clip = taskCancelSFX;
 		audioPlayer.Play();
 	}
