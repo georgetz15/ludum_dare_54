@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
@@ -14,6 +16,8 @@ public class SpaceShipController : MonoBehaviour
     public bool IsTravelling { get; private set; }
     private Transform _destination;
     [SerializeField] private UnityEvent<Transform> onTravelFinished = new();
+    [SerializeField] private GameObject gameController;
+    private Queue<Transform> _path = new Queue<Transform>();
 
     public int MaxCargoCapacity
     {
@@ -40,6 +44,18 @@ public class SpaceShipController : MonoBehaviour
     // private GameObject _currentPlane
     public GameObject CurrentPlanet { get; private set; }
 
+    public void TravelWithPath(GameObject destination)
+    {
+        var gc = gameController.GetComponent<GameController>();
+        if (gc is null) return;
+        if (IsTravelling) return;
+
+        var path = gc.mapController.GetShortestPath(CurrentPlanet.transform, destination.transform);
+        if (path.Count > 0) path.RemoveAt(0);
+        _path = new Queue<Transform>(path);
+        TryTravelNext();
+    }
+    
     public void TravelTo(GameObject destination)
     {
         if (IsTravelling) return;
@@ -50,7 +66,14 @@ public class SpaceShipController : MonoBehaviour
         transform.up = _destination.position - transform.position;
         IsTravelling = true;
     }
-    
+
+    private void TryTravelNext()
+    {
+        _path.TryDequeue(out var dest);
+        if (dest is null) return;
+        TravelTo(dest.gameObject);
+    }
+
     // Start is called before the first frame update
     private void Awake()
     {
@@ -71,8 +94,9 @@ public class SpaceShipController : MonoBehaviour
             CurrentPlanet = _destination.gameObject;
             IsTravelling = false;
             _destination = null;
-
+            
             onTravelFinished.Invoke(_destination);
+            TryTravelNext();
         }
     }
 

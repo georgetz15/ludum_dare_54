@@ -204,7 +204,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1198911363}
         m_TargetAssemblyTypeName: SpaceShipController, Assembly-CSharp
-        m_MethodName: TravelTo
+        m_MethodName: TravelWithPath
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1384,6 +1384,7 @@ MonoBehaviour:
   onTravelFinished:
     m_PersistentCalls:
       m_Calls: []
+  gameController: {fileID: 2044383503}
 --- !u!4 &1198911364
 Transform:
   m_ObjectHideFlags: 0
@@ -2371,7 +2372,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 50}
-  m_SizeDelta: {x: 200, y: 50}
+  m_SizeDelta: {x: 350, y: 50}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &2047688579
 MonoBehaviour:
@@ -2393,10 +2394,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Cargo: X/Y Tons'
+  m_text: 'Cargo: X/Y Units'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e9c5d5496ee435c41b01c8b49b8bca26, type: 2}
+  m_sharedMaterial: {fileID: 2030537662875834869, guid: e9c5d5496ee435c41b01c8b49b8bca26, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
