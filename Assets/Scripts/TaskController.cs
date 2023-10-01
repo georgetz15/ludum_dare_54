@@ -9,20 +9,30 @@ public class TaskController : MonoBehaviour
 {
     [field: SerializeReference] public SpaceShipController spaceShipController { get; set; }
 
-    [SerializeField] public UnityEvent<PlayerTasks> onTaskCreate;
+    [SerializeField] public UnityEvent<PlayerTask> onTaskCreate;
 
     
     private readonly int _maxNumberOfAvailableTasks = 12;
+    public static TaskController Instance;
 
     private List<GameObject> _planets;
 
-    [SerializeField] public List<PlayerTasks> availableTasks = new();
+    [SerializeField] public Dictionary<GameObject, List<PlayerTask>> availableTasks = new();
 
     // Start is called before the first frame update
     private void Awake()
     {
-        if (onTaskCreate == null)
-            onTaskCreate = new UnityEvent<PlayerTasks>();
+		if (Instance == null)
+		{
+			Instance = this;
+		}
+		else
+		{
+			Destroy(gameObject);
+		}
+	
+		if (onTaskCreate == null)
+            onTaskCreate = new UnityEvent<PlayerTask>();
     }
 
     // Update is called once per frame
@@ -43,7 +53,7 @@ public class TaskController : MonoBehaviour
         var planetTo = _planets.Where(x => x != planetFrom).ToList()[Random.Range(0, _planets.Count - 2)];
        
         CargoItem item = GetComponent<CargoAssigner>().GetItemForType(TaskType.POWER_GENERATION);
-        var newTask = new PlayerTasks
+        var newTask = new PlayerTask
         {
             CargoName = taskDescription,
             CargoUnits = Random.Range(1, maxCargoCapacity),
@@ -54,11 +64,25 @@ public class TaskController : MonoBehaviour
             CargoItem = item,
         };
 
-        availableTasks.Add(newTask);
+        AddTask(planetFrom, newTask);
         Debug.Log($"new task name {taskDescription}");
 
         onTaskCreate.Invoke(newTask);
     }
+
+    private void AddTask(GameObject planetFrom, PlayerTask newTask)
+    {
+		if (availableTasks.ContainsKey(planetFrom))
+		{
+			availableTasks[planetFrom].Add(newTask);
+		}
+		else
+		{
+			List<PlayerTask> newList = new List<PlayerTask>();
+			newList.Add(newTask);
+			availableTasks.Add(planetFrom, newList);
+		}
+	}
 
 	private static TaskType GetRandomTaskType()
 	{
@@ -73,6 +97,24 @@ public class TaskController : MonoBehaviour
 		return TaskDescriptions.GetDescriptions()[taskType];
 
 	}
+
+    public bool CanAcceptMission(PlayerTask mission)
+    {
+		if (mission == null) return false;
+		return CanAcceptMission(mission.CargoUnits);
+    }
+
+    public bool CanAcceptMission(int cargoQty)
+    {
+        var sc = SpaceShipController.Instance;
+        if (cargoQty >= sc.MaxCargoCapacity - sc.Cargo)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
 	private int HowManyNewTasksWeNeedToGenerate()
     {
         return _maxNumberOfAvailableTasks - availableTasks.Count;

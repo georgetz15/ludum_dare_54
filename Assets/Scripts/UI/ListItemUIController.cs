@@ -21,12 +21,19 @@ public class ListItemUIController : MonoBehaviour
 		var btn = GetComponent<Button>();
 		btn.onClick.AddListener(delegate
 		{
-			var invCtrl = GameObject.FindWithTag("InventoryController")?.GetComponent<InventoryController>();
+            var invCtrl = InventoryController.Instance;
 			if (invCtrl is null) return;
+            var taskCtrl = TaskController.Instance;
+            if (taskCtrl is null) return;
+
+            if (!taskCtrl.CanAcceptMission(cargoQuantity))
+            {
+                return;
+            }
             invCtrl.AddItem(cargoItem, cargoQuantity);
 		});
 	}
-	public void SetListItem(PlayerTasks task)
+	public void SetListItem(PlayerTask task)
     {
         titleText.text = task.CargoName;
         fromPlanetText.text = $"From: {task.PlanetFrom.name}";

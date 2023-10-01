@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Models
 {
-    public class PlayerTasks
+    public class PlayerTask
     {
         public string CargoName { get; set; }
         public int CargoUnits { get; set; }

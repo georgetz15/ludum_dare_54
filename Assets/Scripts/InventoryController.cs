@@ -44,6 +44,8 @@ public class InventoryController : MonoBehaviour
 	{
 		AssertCapacity();
 		Items.Add(item);
+		SpaceShipController scCtrl = SpaceShipController.Instance;
+		scCtrl.Cargo += 1;
 		LoadInventory();
 	}
 
@@ -54,6 +56,8 @@ public class InventoryController : MonoBehaviour
 			AssertCapacity();
 			Items.Add(item);
 		}
+		SpaceShipController scCtrl = SpaceShipController.Instance;
+		scCtrl.Cargo += qty;
 		LoadInventory();
 	}
 

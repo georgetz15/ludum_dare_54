@@ -7,11 +7,11 @@ public class ScrollViewContentController : MonoBehaviour
 {
     [SerializeField] private GameObject listItemPrefab;
 
-    private Dictionary<PlayerTasks, Transform> _tasks;
+    private Dictionary<PlayerTask, Transform> _tasks;
     // Start is called before the first frame update
     void Awake()
     {
-        _tasks = new Dictionary<PlayerTasks, Transform>();
+        _tasks = new Dictionary<PlayerTask, Transform>();
     }
 
     // Update is called once per frame
@@ -20,7 +20,7 @@ public class ScrollViewContentController : MonoBehaviour
         
     }
 
-    public void createListItem(PlayerTasks task)
+    public void createListItem(PlayerTask task)
     {
         var item = Instantiate(listItemPrefab, transform, true);
         var liController = item.GetComponent<ListItemUIController>();
@@ -28,7 +28,7 @@ public class ScrollViewContentController : MonoBehaviour
         _tasks.Add(task, item.transform);
     }
 
-    public void removeListItem(PlayerTasks task)
+    public void removeListItem(PlayerTask task)
     {
         Destroy(_tasks[task]);
         _tasks.Remove(task);
