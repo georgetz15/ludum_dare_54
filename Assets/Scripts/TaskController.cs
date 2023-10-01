@@ -101,18 +101,18 @@ public class TaskController : MonoBehaviour
         return TaskDescriptions.GetDescriptions()[taskType];
     }
 
-    public bool CanAcceptMission(PlayerTask mission)
+    public TaskErrorCode CanAcceptMission(PlayerTask mission)
     {
-        if (mission == null) return false;
-        return CanAcceptMission(mission.CargoUnits);
-    }
+        if (mission == null) return TaskErrorCode.INVALID_TASK;
 
-    public bool CanAcceptMission(int cargoQty)
-    {
-        var sc = SpaceShipController.Instance;
-        if (cargoQty >= sc.MaxCargoCapacity - sc.Cargo) return false;
+		var sc = SpaceShipController.Instance;
+		if (mission.CargoUnits >= sc.MaxCargoCapacity - sc.Cargo)
+			return TaskErrorCode.INSUFFICIENT_SPACE;
 
-        return true;
+        if (mission.PlanetFrom != sc.CurrentPlanet || sc.IsTravelling) 
+            return TaskErrorCode.INVALID_START_PLANET;
+
+        return TaskErrorCode.OK;	
     }
 
     private int HowManyNewTasksWeNeedToGenerate()
