@@ -119,5 +119,6 @@ public class SpaceShipController : MonoBehaviour
         var planets = GameController.GetObjectsInLayer(LayerMask.GetMask("Planets")).ToList();
         var i = Random.Range(0, planets.Count - 1);
         TravelTo(planets[i]);
+        CurrentPlanet = planets[i];
     }
 }
