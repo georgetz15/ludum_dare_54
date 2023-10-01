@@ -52,7 +52,7 @@ public class TaskController : MonoBehaviour
         var planetFrom = _planets[Random.Range(0, _planets.Count - 1)];
         var planetTo = _planets.Where(x => x != planetFrom).ToList()[Random.Range(0, _planets.Count - 2)];
        
-        CargoItem item = GetComponent<CargoAssigner>().GetItemForType(TaskType.POWER_GENERATION);
+        CargoItem item = GetComponent<CargoAssigner>().GetItemForType(taskType);
         var newTask = new PlayerTask
         {
             CargoName = taskDescription,
