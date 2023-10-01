@@ -26,7 +26,16 @@ public class ScrollViewContentController : MonoBehaviour
     void Update()
     {
     }
+    
+    public void UpdateTask(PlayerTask task)
+    {
+        if (!_tasks.ContainsKey(task)) return;
 
+        var listController = _tasks[task].GetComponent<ListItemUIController>();
+        if (listController is null) return;
+
+        listController.SetListItem(task);
+	}
     public void createListItem(PlayerTask task)
     {
         var item = Instantiate(listItemPrefab, transform, true);
