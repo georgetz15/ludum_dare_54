@@ -4,9 +4,15 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    public PlanetSpawner planetSpawner;
+    public MapController mapController;
+
     // Start is called before the first frame update
     private void Start()
+
     {
+        planetSpawner.GeneratePlanets();
+        mapController.GenerateGraph();
     }
 
     // Update is called once per frame

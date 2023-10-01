@@ -33,10 +33,9 @@ public class PlanetSpawner : MonoBehaviour
 	void Start()
 	{
 		minSpacing = maxSize;
-		GeneratePlanets();
 	}
 
-	void GeneratePlanets()
+	public void GeneratePlanets()
 	{
 		// Create a list of positions to track where planets are placed
 		Vector3 currentPosition = initialPosition;
