@@ -49,7 +49,8 @@ public class ListItemUIController : MonoBehaviour, IPointerEnterHandler, IPointe
 					SetStatus(_task);
 					invCtrl.AddItem(cargoItem, cargoQuantity);
                     break;
-                default:
+				case TaskErrorCode.ALREADY_ACTIVE:
+				default:
                     break;
             }
 		});

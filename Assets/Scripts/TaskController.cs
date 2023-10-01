@@ -94,6 +94,9 @@ public class TaskController : MonoBehaviour
         if (mission.PlanetFrom != sc.CurrentPlanet || sc.IsTravelling) 
             return TaskErrorCode.INVALID_START_PLANET;
 
+        if (mission.Status == TaskStatus.ACTIVE)
+            return TaskErrorCode.ALREADY_ACTIVE;
+
         return TaskErrorCode.OK;	
     }
 
