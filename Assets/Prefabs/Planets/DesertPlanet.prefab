@@ -207,9 +207,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   planetID: 0
   glow: {fileID: 2751966862407128252}
-  hoverColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  fromColor: {r: 0, g: 0, b: 1, a: 1}
-  toColor: {r: 0, g: 1, b: 0, a: 1}
+  hoverColor: {r: 0.8773585, g: 0.8773585, b: 0.8773585, a: 1}
+  fromColor: {r: 0.8509804, g: 0.6, b: 0.3647059, a: 1}
+  toColor: {r: 0.3647059, g: 0.8509804, b: 0.4862745, a: 1}
 --- !u!135 &2548152595240134344
 SphereCollider:
   m_ObjectHideFlags: 0
