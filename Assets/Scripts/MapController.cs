@@ -6,11 +6,11 @@ using UnityEngine;
 
 public class MapController : MonoBehaviour
 {
-    [SerializeField] private GameObject edgePrefab;
+    [SerializeField] private GameObject? edgePrefab;
     [SerializeField] private float lineWidth = 0.1f;
-    [SerializeField] private GameObject spaceshipConroller;
-    [SerializeField] private Material edgeMaterial;
-    [SerializeField] private Material activeEdgeMaterial;
+    [SerializeField] private GameObject? spaceshipConroller;
+    [SerializeField] private Material? edgeMaterial;
+    [SerializeField] private Material? activeEdgeMaterial;
     private List<GameObject> _cachedEdgesUIObjects = new();
     private List<Transform>? _cachedPath;
 
@@ -98,7 +98,7 @@ public class MapController : MonoBehaviour
     {
         // setup light path
         var newLightLine = Instantiate(edgePrefab, transform);
-        var lr = newLightLine.GetComponent<LineRenderer>();
+        var lr = newLightLine?.GetComponent<LineRenderer>();
         var positions = new Vector3[2] { a.position, b.position };
         lr.SetPositions(positions);
         lr.startWidth = lineWidth;
@@ -203,7 +203,7 @@ public class MapController : MonoBehaviour
 
     public void OnPlanetHoverEnter(Transform planet)
     {
-        var sc = spaceshipConroller.GetComponent<SpaceShipController>();
+        var sc = spaceshipConroller?.GetComponent<SpaceShipController>();
         if (sc is null) return;
 
         _cachedPath =
@@ -241,10 +241,11 @@ public class MapController : MonoBehaviour
 
     public void OnPlanetHoverExit(Transform planet)
     {
-        var sc = spaceshipConroller.GetComponent<SpaceShipController>();
+        _cachedPath = null;
+
+        var sc = spaceshipConroller?.GetComponent<SpaceShipController>();
         if (sc is null) return;
         if (sc.IsTravelling) return;
-        _cachedPath = null;
 
         SetEdgesDefaultMaterial();
     }
@@ -263,7 +264,7 @@ public class MapController : MonoBehaviour
     {
         SetEdgesDefaultMaterial();
         if (_cachedPath is null) return;
-        
+
         // Case where user hovered to different planet while travelling
         var sc = spaceshipConroller.GetComponent<SpaceShipController>();
         if (sc is null) return;
@@ -285,7 +286,7 @@ public class MapController : MonoBehaviour
     {
         SetEdgesDefaultMaterial();
         if (_cachedPath is null) return;
-        
+
         // Case where user hovered to different planet while travelling
         var sc = spaceshipConroller.GetComponent<SpaceShipController>();
         if (sc is null) return;

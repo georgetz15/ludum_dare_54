@@ -1,9 +1,21 @@
+using System;
 using UnityEngine;
 
 public class PlanetController : MonoBehaviour
 {
     public int planetID;
     private Animator animator;
+    [SerializeField] private GameObject glow;
+    [SerializeField] private Color hoverColor = Color.gray;
+    [SerializeField] private Color fromColor = Color.blue;
+    [SerializeField] private Color toColor = Color.green;
+
+    public enum GlowType
+    {
+        Hover,
+        From,
+        To
+    }
 
     private void Awake()
     {
@@ -31,13 +43,40 @@ public class PlanetController : MonoBehaviour
 
     public void OnHoverEnter()
     {
+        ShowGlow(GlowType.Hover);
     }
 
     public void OnHoverExit()
     {
+        HideGlow();
     }
 
     public void OnSelect()
     {
+    }
+
+    public void ShowGlow(GlowType glowType)
+    {
+        glow.SetActive(true);
+        var mat = glow.GetComponent<Renderer>()?.material;
+        switch (glowType)
+        {
+            case GlowType.Hover:
+                mat?.SetColor("_BaseColor", hoverColor);
+                break;
+            case GlowType.From:
+                mat?.SetColor("_BaseColor", fromColor);
+                break;
+            case GlowType.To:
+                mat?.SetColor("_BaseColor", toColor);
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(glowType), glowType, null);
+        }
+    }
+
+    public void HideGlow()
+    {
+        glow.SetActive(false);
     }
 }
