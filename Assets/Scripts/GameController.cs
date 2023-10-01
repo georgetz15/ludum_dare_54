@@ -10,7 +10,7 @@ public class GameController : MonoBehaviour
 
     [SerializeField] private UnityEvent<int> onDateChanged = new();
 
-    private int _date = 0;
+    public int Date { get; private set; } = 0;
 
     // Start is called before the first frame update
     private void Start()
@@ -49,7 +49,7 @@ public class GameController : MonoBehaviour
 
     public void ProgressDate(int days = 1)
     {
-        _date += days;
-        onDateChanged.Invoke(_date);
+        Date += days;
+        onDateChanged.Invoke(Date);
     }
 }
