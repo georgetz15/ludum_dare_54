@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Models;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -127,7 +128,7 @@ public class SpaceShipController : MonoBehaviour
             IsTravelling = false;
             _destination = null;
 
-            onTravelFinished.Invoke(_destination);
+            onTravelFinished.Invoke(CurrentPlanet.transform);
             TryTravelNext();
         }
     }
@@ -150,5 +151,10 @@ public class SpaceShipController : MonoBehaviour
     {
         Range += addedRange;
         onRangeUpgraded.Invoke(Range);
+    }
+
+    public void OnTaskCompletion(PlayerTask task)
+    {
+        Credits += task.Reward;
     }
 }

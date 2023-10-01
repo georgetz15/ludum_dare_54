@@ -14,5 +14,6 @@ namespace Models
         public int DeliveryTick { get; set; }
         public CargoItem CargoItem { get; set; }
         public string QuestDescription { get; set; }
+        public int Reward { get; set; }
     } 
 }
