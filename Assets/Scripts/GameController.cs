@@ -1,11 +1,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class GameController : MonoBehaviour
 {
     public PlanetSpawner planetSpawner;
     public MapController mapController;
+
+    [SerializeField] private UnityEvent<int> onDateChanged = new();
+
+    private int _date = 0;
 
     // Start is called before the first frame update
     private void Start()
@@ -40,5 +45,11 @@ public class GameController : MonoBehaviour
     public static GameObject GetSpaceshipController()
     {
         return GameObject.FindGameObjectWithTag("SpaceshipController");
+    }
+
+    public void ProgressDate(int days = 1)
+    {
+        _date += days;
+        onDateChanged.Invoke(_date);
     }
 }
