@@ -167,6 +167,8 @@ public class TaskController : MonoBehaviour
     public void UpdateTaskDates(int currentDate)
     {
 		var scrollViewCtrl = ScrollViewContentController.Instance;
+        var inventoryCtrl = InventoryController.Instance;
+
         List<PlayerTask> cancelQueue = new List<PlayerTask>();
 
 		foreach (var task in _tasks)
@@ -181,10 +183,11 @@ public class TaskController : MonoBehaviour
                 scrollViewCtrl.UpdateTask(task);
             }
         }
-
+    
         foreach (var task in cancelQueue)
         {
             CancelTask(task);
+            inventoryCtrl.RemoveItemsForTask(task);
         }
     }
 }
