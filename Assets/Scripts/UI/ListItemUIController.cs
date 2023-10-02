@@ -85,15 +85,36 @@ public class ListItemUIController : MonoBehaviour, IPointerEnterHandler, IPointe
         fromPlanetText.text = $"From: {task.PlanetFrom.name}";
         toPlanetText.text = $"To: {task.PlanetTo.name}";
         rewardText.text = $"Reward: {task.Reward} credits";
-        deadlineText.text = $"Deadline: {task.Deadline} days";
         cargoText.text = $"Cargo: {task.CargoUnits} units";
         statusText.text = $"Status: {GetTaskStatusStr()}";
 
+        SetDeadlineText();
         cargoItem = task.CargoItem;
         cargoQuantity = task.CargoUnits;
     }
+    
+    private void SetDeadlineText()
+    {
+        var dl = _task.Deadline;
 
-    private string GetTaskStatusStr()
+        if (dl <= 4 && dl > 2)
+        {
+            deadlineText.color = new Color32(252, 194, 3, 255);
+        }
+        else if (_task.Deadline <= 2)
+        {
+            deadlineText.color = new Color32(252, 3, 3, 255);
+        }
+        else
+        {
+            deadlineText.color = new Color32(255, 255, 255, 255);
+        }
+
+		deadlineText.text = $"Deadline: {dl} days";
+
+	}
+
+	private string GetTaskStatusStr()
     {
         switch (_task.Status)
         {
