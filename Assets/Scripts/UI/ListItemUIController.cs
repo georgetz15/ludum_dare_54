@@ -42,7 +42,7 @@ public class ListItemUIController : MonoBehaviour, IPointerEnterHandler, IPointe
                     messageBox.DisplayMsg("Your space is too limited for this cargo, sorry...");
                     break;
                 case TaskErrorCode.INVALID_START_PLANET:
-					messageBox.DisplayMsg("You are not standing at the start planet for this quest...");
+					messageBox.DisplayMsg("You are not at the start planet for this quest...");
                     break;
                 case TaskErrorCode.OK:
                     taskCtrl.SetTaskActive(_task);

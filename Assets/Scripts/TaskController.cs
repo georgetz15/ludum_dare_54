@@ -93,14 +93,14 @@ public class TaskController : MonoBehaviour
         if (mission == null) return TaskErrorCode.INVALID_TASK;
 
 		var sc = SpaceShipController.Instance;
+		if (mission.Status == TaskStatus.ACTIVE)
+			return TaskErrorCode.ALREADY_ACTIVE;
+
+		if (mission.PlanetFrom != sc.CurrentPlanet || sc.IsTravelling)
+			return TaskErrorCode.INVALID_START_PLANET;
+
 		if (mission.CargoUnits >= sc.MaxCargoCapacity - sc.Cargo)
 			return TaskErrorCode.INSUFFICIENT_SPACE;
-
-        if (mission.PlanetFrom != sc.CurrentPlanet || sc.IsTravelling) 
-            return TaskErrorCode.INVALID_START_PLANET;
-
-        if (mission.Status == TaskStatus.ACTIVE)
-            return TaskErrorCode.ALREADY_ACTIVE;
 
         return TaskErrorCode.OK;	
     }
