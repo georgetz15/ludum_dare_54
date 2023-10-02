@@ -12,6 +12,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private UnityEvent<Transform> onPlanetHoverEnter = new();
     [SerializeField] private UnityEvent<Transform> onPlanetHoverExit = new();
 
+    [SerializeField] private GameObject mainMenu;
+    [SerializeField] private GameObject inventoryMenu;
+    [SerializeField] private GameObject missionsMenu;
+    [SerializeField] private GameObject upgradesMenu;
+
     // Start is called before the first frame update
     private void Start()
     {
@@ -76,5 +81,33 @@ public class PlayerController : MonoBehaviour
         var ray = cam.ScreenPointToRay(_mousePosition);
         bool isOverUI = UnityEngine.EventSystems.EventSystem.current.IsPointerOverGameObject();
         return (isOverUI || !Physics.Raycast(ray, out var hit)) ? null : hit.transform;
+    }
+
+    private void OnMenu(InputValue value)
+    {
+        var selected = value.Get<float>() > 0.5f;
+
+        mainMenu.SetActive(!mainMenu.activeSelf);
+    }
+
+    private void OnInventory(InputValue value)
+    {
+        var selected = value.Get<float>() > 0.5f;
+
+        inventoryMenu.SetActive(!inventoryMenu.activeSelf);
+    }
+
+    private void OnMissions(InputValue value)
+    {
+        var selected = value.Get<float>() > 0.5f;
+
+        missionsMenu.SetActive(!missionsMenu.activeSelf);
+    }
+
+    private void OnUpgrades(InputValue value)
+    {
+        var selected = value.Get<float>() > 0.5f;
+
+        upgradesMenu.SetActive(!upgradesMenu.activeSelf);
     }
 }

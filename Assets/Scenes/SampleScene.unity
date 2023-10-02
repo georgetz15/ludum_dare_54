@@ -244,6 +244,10 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+  mainMenu: {fileID: 692306465}
+  inventoryMenu: {fileID: 99716808}
+  missionsMenu: {fileID: 1286813234}
+  upgradesMenu: {fileID: 789318637}
 --- !u!1 &37201693
 GameObject:
   m_ObjectHideFlags: 0
@@ -1145,7 +1149,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Inventory
+  m_Text: '[I]nventory'
 --- !u!222 &288852719
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3278,7 +3282,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: -788.4783, y: 466.63068}
-  m_SizeDelta: {x: 126.4318, y: 50}
+  m_SizeDelta: {x: 255, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &825606995
 MonoBehaviour:
@@ -3665,7 +3669,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Upgrades
+  m_Text: '[U]pgrades'
 --- !u!222 &932176527
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3865,7 +3869,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: MENU
+  m_text: MENU [ESC]
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e9c5d5496ee435c41b01c8b49b8bca26, type: 2}
   m_sharedMaterial: {fileID: 2030537662875834869, guid: e9c5d5496ee435c41b01c8b49b8bca26, type: 2}
@@ -4012,7 +4016,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: Missions
+  m_Text: '[M]issions'
 --- !u!222 &1085360350
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -6579,8 +6583,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 112718652}
-  - {fileID: 808563509}
   - {fileID: 1759998209}
+  - {fileID: 808563509}
   m_Father: {fileID: 1702365478}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
