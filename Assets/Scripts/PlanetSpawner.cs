@@ -26,9 +26,10 @@ public class PlanetSpawner : MonoBehaviour
 	private float minSpacing;
 	public float range = 7; // Maximum range from spaceship
 	private List<Vector3> usedPositions = new List<Vector3>();
-	private float probOutsideRange = 0.05f;
 
 	[SerializeField] private UnityEvent onPlanetsSpawned = new();
+	private List<Collider2D> planetColliders = new List<Collider2D>();
+
 
 	void Start()
 	{
@@ -58,18 +59,22 @@ public class PlanetSpawner : MonoBehaviour
 			planet.GetComponent<PlanetController>().Initialize(randomAnimSpeed, randomAnimOffset);
 
 			// Update the current position for the next planet
-			currentPosition = GenerateRandomPosition(currentPosition);
+			currentPosition = GenerateRandomPosition(currentPosition, planet);
 		}
 		
 		onPlanetsSpawned.Invoke();
 	}
 
 	// Generate a random position within the constraints
-	private Vector3 GenerateRandomPosition(Vector3 previousPosition)
+	private Vector3 GenerateRandomPosition(Vector3 previousPosition, GameObject planet)
 	{
 		Vector3 newPosition;
-		int maxRetries = 250;
+		int maxRetries = 500;
 
+		float xMinBound = -gridSize.x / 2 + maxSize;
+		float xMaxBound = gridSize.x / 2 - maxSize;
+		float yMinBound = -gridSize.y / 2 + maxSize;
+		float yMaxBound = gridSize.y / 2 - maxSize;
 
 		for (int retry = 0; retry < maxRetries; ++retry)
 		{
@@ -84,27 +89,18 @@ public class PlanetSpawner : MonoBehaviour
 			newPosition = previousPosition + new Vector3(xOffset, yOffset, 0f);
 
 			// Ensure the planet, including its maximum size, remains within the grid boundaries
-			float xMinBound = -gridSize.x / 2 + maxSize;
-			float xMaxBound = gridSize.x / 2 - maxSize;
-			float yMinBound = -gridSize.y / 2 + maxSize;
-			float yMaxBound = gridSize.y / 2 - maxSize;
-
 			newPosition.x = Mathf.Clamp(newPosition.x, xMinBound, xMaxBound);
 			newPosition.y = Mathf.Clamp(newPosition.y, yMinBound, yMaxBound);
 
 			// Check for collisions with other planets
-			Collider2D[] colliders = Physics2D.OverlapCircleAll(newPosition, maxSize);
-			bool isCollision = false;
-
+			Collider2D[] colliders = planet.GetComponentsInChildren<Collider2D>();
 			foreach (Collider2D collider in colliders)
 			{
-				if (collider.gameObject != null && collider.gameObject != this.gameObject)
-				{
-					isCollision = true;
-					break;
-				}
+				planetColliders.Add(collider);
 			}
+			bool isCollision = IsOverlapping(newPosition);
 
+		
 			// Check for spacing constraint
 			bool isSpacingValid = true;
 			foreach (Vector3 usedPosition in usedPositions)
@@ -115,11 +111,8 @@ public class PlanetSpawner : MonoBehaviour
 					break;
 				}
 			}
-
-			// Check for the 5% chance of falling outside the range
-			bool isOutsideRange = Random.Range(0f, 1f) <= probOutsideRange;
-
-			if (!isCollision && isSpacingValid && !isOutsideRange)
+			
+			if (!isCollision && isSpacingValid)
 			{
 				// Valid position found, add it to used positions and return
 				usedPositions.Add(newPosition);
@@ -127,18 +120,27 @@ public class PlanetSpawner : MonoBehaviour
 			}
 		}
 
-		return initialPosition;
-	}
-	
-	private bool IsPositionUsed(Vector3 position)
-	{
-		foreach (Vector3 usedPosition in usedPositions)
+		// Return random non-overlapping position
+		Vector3 randomPos;
+		do
 		{
-			if (Vector3.Distance(position, usedPosition) < minSpacing)
+			var randomX = Random.Range(xMinBound, xMaxBound);
+			var randomY = Random.Range(yMinBound, yMaxBound);
+			randomPos = new Vector3(randomX, randomY, 0f);
+		} while (usedPositions.Contains(randomPos) || IsOverlapping(randomPos));
+		usedPositions.Add(randomPos);
+		return randomPos;
+	}
+
+	bool IsOverlapping(Vector3 position)
+	{
+		foreach (Collider2D collider in planetColliders)
+		{
+			if (collider.bounds.Contains(position))
 			{
-				return true; // Position is already used
+				return true;
 			}
 		}
-		return false; // Position is not used
+		return false;
 	}
 }
