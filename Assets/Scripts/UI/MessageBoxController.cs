@@ -35,6 +35,14 @@ public class MessageBox : MonoBehaviour
 		messageBoxContainer.SetActive(true);
 		StartCoroutine(HideAfterDelay());
 	}
+
+	public void DisplayMsgWithoutAutohide(string msg)
+	{
+		SetText(msg);
+		var inventoryController = InventoryController.Instance;
+		inventoryController.CloseInventoryUI();
+		messageBoxContainer.SetActive(true);
+	}
 	
 	private void SetText(string message)
 	{
