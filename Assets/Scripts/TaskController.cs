@@ -185,9 +185,10 @@ public class TaskController : MonoBehaviour
         }
     
         foreach (var task in cancelQueue)
-        {
+        {   
+            if (task.Status == TaskStatus.ACTIVE)
+                inventoryCtrl.RemoveItemsForTask(task);
             CancelTask(task);
-            inventoryCtrl.RemoveItemsForTask(task);
         }
     }
 }
