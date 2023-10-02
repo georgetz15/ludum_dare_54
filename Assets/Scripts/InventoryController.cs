@@ -106,8 +106,8 @@ public class InventoryController : MonoBehaviour
 			Instantiate(ItemPrefab, InventoryGridTransform);
 		}
 	}
-
-	public void OnTaskCompleted(PlayerTask task)
+	
+	public void RemoveItemsForTask(PlayerTask task)
 	{
 		for (int i = 0; i < task.CargoUnits; i++)
 		{
@@ -116,5 +116,10 @@ public class InventoryController : MonoBehaviour
 			scCtrl.Cargo -= 1;
 		}
 		LoadInventory();
+	}
+
+	public void OnTaskCompleted(PlayerTask task)
+	{
+		RemoveItemsForTask(task);
 	}
 }

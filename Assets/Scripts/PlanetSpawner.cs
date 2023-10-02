@@ -10,11 +10,11 @@ public class PlanetSpawner : MonoBehaviour
 	public GameObject[] planetPrefabs; // Array of different planet prefabs
 	public int numPlanets = 6; // Number of planets to generate
 	public Vector2 gridSize = new Vector2(20f, 20f); // Size of the grid
-	public Vector2 initialPosition; // Initial position to start generating planets	
 	
 	// Size controls
 	public float minSize = 1f;
 	public float maxSize = 2.5f;
+	private float minSpacing = 0f;
 
     // Animatioon controls
 	public float minAnimSpeed = 0.05f;
@@ -26,6 +26,7 @@ public class PlanetSpawner : MonoBehaviour
 	private int minClusterSize;
 	private	int planetNameCounter = 0;
 	private List<Collider2D> planetColliders = new List<Collider2D>();
+	private List<Vector2> usedPositions = new List<Vector2>();
 
 	private float range;
 	private float defaultRange = 3f;
@@ -34,10 +35,7 @@ public class PlanetSpawner : MonoBehaviour
 	public GameObject initialPlanet;
 	void Start()
 	{
-		float randomX = Random.Range(-gridSize.x * 0.5f, gridSize.x * 0.5f);
-		float randomY = Random.Range(-gridSize.y * 0.5f, gridSize.y * 0.5f);
-		
-		initialPosition = new Vector2(randomX, randomY);
+		minSpacing = maxSize + 0.5f;		
 
 		var sc = SpaceShipController.Instance;
 		if (sc != null)
@@ -65,7 +63,8 @@ public class PlanetSpawner : MonoBehaviour
 			do
 			{
 				position = Random.insideUnitCircle * range;
-			} while (IsOverlapping(position));
+			} while (IsOverlapping(position) && !IsValidSpacing(position));
+			usedPositions.Add(position);
 			InstantiateRandomPlanet(position, i);
 		}
 
@@ -73,6 +72,7 @@ public class PlanetSpawner : MonoBehaviour
 		for (int i = minClusterSize; i < numPlanets; i++)
 		{
 			position = GetRandomValidPosition();
+			usedPositions.Add(position);
 			InstantiateRandomPlanet(position, i);
 		}
 
@@ -81,7 +81,6 @@ public class PlanetSpawner : MonoBehaviour
 
 	void InstantiateRandomPlanet(Vector2 position, int idx)
 	{
-
 		// Generate random planet with name
 		GameObject planetPrefab = planetPrefabs[Random.Range(0, planetPrefabs.Count())];
 		GameObject planet = Instantiate(planetPrefab, position, Quaternion.identity);
@@ -113,7 +112,7 @@ public class PlanetSpawner : MonoBehaviour
 	Vector2 GetRandomValidPosition()
 	{
 		Vector2 position;
-		int maxAttempts = 100;
+		int maxAttempts = 300;
 		int currentAttempt = 0;
 
 		do
@@ -123,7 +122,10 @@ public class PlanetSpawner : MonoBehaviour
 			position = new Vector2(x, y);
 			currentAttempt++;
 		}
-		while (IsOverlapping(position) && currentAttempt < maxAttempts);
+		while (usedPositions.Contains(position) &&
+			   IsOverlapping(position)          && 
+			   !IsValidSpacing(position)        &&
+			   currentAttempt < maxAttempts);
 
 		return position;
 	}
@@ -137,8 +139,17 @@ public class PlanetSpawner : MonoBehaviour
 				return true;
 			}
 		}
-
-
 		return false;
+	}
+
+	bool IsValidSpacing(Vector2 position)
+	{
+		foreach (var pos in usedPositions)
+		{
+			if (Vector2.Distance(position, pos) >= minSpacing)
+				return false;
+		}
+
+		return true;
 	}
 }
