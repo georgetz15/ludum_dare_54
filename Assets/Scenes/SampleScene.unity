@@ -1613,7 +1613,7 @@ MonoBehaviour:
   - {fileID: 371239659437542598, guid: bcf74be270b819d4398706f7bdefceaa, type: 3}
   - {fileID: 7053989771488963555, guid: e1be9633b8f89b145832cb04cbe47908, type: 3}
   - {fileID: 8380450041259798947, guid: 6fca76d0327a59340b673539dc68fbd4, type: 3}
-  numPlanets: 30
+  numPlanets: 20
   gridSize: {x: 17, y: 13}
   initialPosition: {x: 0, y: 0}
   minSize: 0.8
@@ -1622,7 +1622,7 @@ MonoBehaviour:
   maxAnimSpeed: 0.3
   minAnimCycleOffset: 0
   maxAnimCycleOffset: 1
-  range: 5
+  range: 8
   onPlanetsSpawned:
     m_PersistentCalls:
       m_Calls:
@@ -3850,8 +3850,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24f480c7b9067b44da53b6bf1ad58033, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 3.5
-  maxCargoCapacity: 50
+  range: 3
+  maxCargoCapacity: 24
   onCargoChanged:
     m_PersistentCalls:
       m_Calls:
@@ -4054,7 +4054,7 @@ MonoBehaviour:
   m_Elasticity: 0.1
   m_Inertia: 1
   m_DecelerationRate: 0.135
-  m_ScrollSensitivity: 15
+  m_ScrollSensitivity: 55
   m_Viewport: {fileID: 1988036011}
   m_HorizontalScrollbar: {fileID: 0}
   m_VerticalScrollbar: {fileID: 0}

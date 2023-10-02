@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: CargoUpgradeSmall
   m_EditorClassIdentifier: 
   upgradeType: 0
-  amount: 3
+  amount: 4
   cost: 50

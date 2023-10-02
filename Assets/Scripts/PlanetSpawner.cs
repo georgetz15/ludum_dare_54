@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
@@ -50,6 +51,7 @@ public class PlanetSpawner : MonoBehaviour
 			GameObject planet = Instantiate(randomPlanetPrefab, currentPosition, Quaternion.identity);
 			planetNameCounter = i% PlanetNames.names.Length;
 			planet.name = $"{PlanetNames.names[planetNameCounter]}";
+			planet.GetComponentInChildren<TMP_Text>().text = planet.name;
 
 			// Set random size, animation speed, and cycle offset
 			float randomSize = Random.Range(minSize, maxSize);
