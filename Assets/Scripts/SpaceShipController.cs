@@ -135,10 +135,9 @@ public class SpaceShipController : MonoBehaviour
 
     public void SetRandomPlanetStartingPoint()
     {
-        var planets = GameController.GetObjectsInLayer(LayerMask.GetMask("Planets")).ToList();
-        var i = Random.Range(0, planets.Count - 1);
-        TravelTo(planets[i]);
-        CurrentPlanet = planets[i];
+        var initialPlanet = PlanetSpawner.Instance.initialPlanet;
+		TravelTo(initialPlanet);
+        CurrentPlanet = initialPlanet;
     }
 
     public void UpgradeCargo(int addedSlots)

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using Random = UnityEngine.Random;
@@ -9,7 +10,7 @@ public class PlanetSpawner : MonoBehaviour
 	public GameObject[] planetPrefabs; // Array of different planet prefabs
 	public int numPlanets = 6; // Number of planets to generate
 	public Vector2 gridSize = new Vector2(20f, 20f); // Size of the grid
-	public Vector2 initialPosition = Vector2.zero; // Initial position to start generating planets	
+	public Vector2 initialPosition; // Initial position to start generating planets	
 	
 	// Size controls
 	public float minSize = 1f;
@@ -21,124 +22,123 @@ public class PlanetSpawner : MonoBehaviour
 	public float minAnimCycleOffset = 0.0f;
 	public float maxAnimCycleOffset = 1.0f;
 
-	// Position controls
-	// TODO : Get range from spaceship controller
-	private float minSpacing;
-	public float range = 7; // Maximum range from spaceship
-	private List<Vector3> usedPositions = new List<Vector3>();
-	private float probOutsideRange = 0.05f;
-
 	[SerializeField] private UnityEvent onPlanetsSpawned = new();
+	private int minClusterSize;
+	private	int planetNameCounter = 0;
+	private List<Collider2D> planetColliders = new List<Collider2D>();
 
+	private float range;
+	private float defaultRange = 3f;
+
+	public static PlanetSpawner Instance;
+	public GameObject initialPlanet;
 	void Start()
 	{
-		minSpacing = maxSize;
+		float randomX = Random.Range(-gridSize.x * 0.5f, gridSize.x * 0.5f);
+		float randomY = Random.Range(-gridSize.y * 0.5f, gridSize.y * 0.5f);
+		
+		initialPosition = new Vector2(randomX, randomY);
+
+		var sc = SpaceShipController.Instance;
+		if (sc != null)
+		{
+			range = SpaceShipController.Instance.Range;
+		} else
+		{
+			range = defaultRange;
+		}
+	}
+
+	private void Awake()
+	{
+		Instance = this;
 	}
 
 	public void GeneratePlanets()
 	{
-		// Create a list of positions to track where planets are placed
-		Vector3 currentPosition = initialPosition;
-		int planetNameCounter = 0;
-		for (int i = 0; i < numPlanets; i++)
+		minClusterSize = (int)(numPlanets * 0.15f);
+		Vector2 position;
+		planetNameCounter = 0;
+		// Generate connected planets around the origin
+		for (int i = 0; i < minClusterSize; i++)
 		{
-			// Randomly choose a planet prefab from the array
-			GameObject randomPlanetPrefab = planetPrefabs[Random.Range(0, planetPrefabs.Length)];
-
-			GameObject planet = Instantiate(randomPlanetPrefab, currentPosition, Quaternion.identity);
-			planetNameCounter = i% PlanetNames.names.Length;
-			planet.name = $"{PlanetNames.names[planetNameCounter]}";
-
-			// Set random size, animation speed, and cycle offset
-			float randomSize = Random.Range(minSize, maxSize);
-			planet.transform.localScale = new Vector3(randomSize, randomSize, 1f);
-
-			float randomAnimSpeed = Random.Range(minAnimSpeed, maxAnimSpeed);
-			float randomAnimOffset = Random.Range(minAnimCycleOffset, maxAnimCycleOffset);
-			planet.GetComponent<PlanetController>().Initialize(randomAnimSpeed, randomAnimOffset);
-
-			// Update the current position for the next planet
-			currentPosition = GenerateRandomPosition(currentPosition);
+			do
+			{
+				position = Random.insideUnitCircle * range;
+			} while (IsOverlapping(position));
+			InstantiateRandomPlanet(position, i);
 		}
-		
+
+		// Generate remaining planets randomly
+		for (int i = minClusterSize; i < numPlanets; i++)
+		{
+			position = GetRandomValidPosition();
+			InstantiateRandomPlanet(position, i);
+		}
+
 		onPlanetsSpawned.Invoke();
 	}
 
-	// Generate a random position within the constraints
-	private Vector3 GenerateRandomPosition(Vector3 previousPosition)
+	void InstantiateRandomPlanet(Vector2 position, int idx)
 	{
-		Vector3 newPosition;
-		int maxRetries = 250;
 
+		// Generate random planet with name
+		GameObject planetPrefab = planetPrefabs[Random.Range(0, planetPrefabs.Count())];
+		GameObject planet = Instantiate(planetPrefab, position, Quaternion.identity);
+		planetNameCounter = planetNameCounter % PlanetNames.names.Length;
+		planet.name = $"{PlanetNames.names[planetNameCounter++]}";
 
-		for (int retry = 0; retry < maxRetries; ++retry)
+		// Collect colliders
+		Collider2D[] colliders = planet.GetComponentsInChildren<Collider2D>();
+		foreach (Collider2D collider in colliders)
 		{
-
-			// Generate a random position within the circular range
-			float angle = Random.Range(0f, 360f);
-			float distance = Random.Range(minSpacing, range);
-
-			float xOffset = Mathf.Cos(angle * Mathf.Deg2Rad) * distance;
-			float yOffset = Mathf.Sin(angle * Mathf.Deg2Rad) * distance;
-
-			newPosition = previousPosition + new Vector3(xOffset, yOffset, 0f);
-
-			// Ensure the planet, including its maximum size, remains within the grid boundaries
-			float xMinBound = -gridSize.x / 2 + maxSize;
-			float xMaxBound = gridSize.x / 2 - maxSize;
-			float yMinBound = -gridSize.y / 2 + maxSize;
-			float yMaxBound = gridSize.y / 2 - maxSize;
-
-			newPosition.x = Mathf.Clamp(newPosition.x, xMinBound, xMaxBound);
-			newPosition.y = Mathf.Clamp(newPosition.y, yMinBound, yMaxBound);
-
-			// Check for collisions with other planets
-			Collider2D[] colliders = Physics2D.OverlapCircleAll(newPosition, maxSize);
-			bool isCollision = false;
-
-			foreach (Collider2D collider in colliders)
-			{
-				if (collider.gameObject != null && collider.gameObject != this.gameObject)
-				{
-					isCollision = true;
-					break;
-				}
-			}
-
-			// Check for spacing constraint
-			bool isSpacingValid = true;
-			foreach (Vector3 usedPosition in usedPositions)
-			{
-				if (Vector3.Distance(newPosition, usedPosition) < minSpacing)
-				{
-					isSpacingValid = false;
-					break;
-				}
-			}
-
-			// Check for the 5% chance of falling outside the range
-			bool isOutsideRange = Random.Range(0f, 1f) <= probOutsideRange;
-
-			if (!isCollision && isSpacingValid && !isOutsideRange)
-			{
-				// Valid position found, add it to used positions and return
-				usedPositions.Add(newPosition);
-				return newPosition;
-			}
+			planetColliders.Add(collider);
 		}
 
-		return initialPosition;
+		// Adjust the scale of the planet
+		float scale = Random.Range(minSize, maxSize);
+		planet.transform.localScale = new Vector3(scale, scale, 1f);
+		
+		// Randomize the animation
+		float randomAnimSpeed = Random.Range(minAnimSpeed, maxAnimSpeed);
+		float randomAnimOffset = Random.Range(minAnimCycleOffset, maxAnimCycleOffset);
+		planet.GetComponent<PlanetController>().Initialize(randomAnimSpeed, randomAnimOffset);
+
+		if (idx == 0)
+		{
+			initialPlanet = planet;
+		}
 	}
-	
-	private bool IsPositionUsed(Vector3 position)
+
+	Vector2 GetRandomValidPosition()
 	{
-		foreach (Vector3 usedPosition in usedPositions)
+		Vector2 position;
+		int maxAttempts = 100;
+		int currentAttempt = 0;
+
+		do
 		{
-			if (Vector3.Distance(position, usedPosition) < minSpacing)
+			float x = Random.Range(-gridSize.x * 0.5f, gridSize.x * 0.5f);
+			float y = Random.Range(-gridSize.y * 0.5f, gridSize.y * 0.5f);
+			position = new Vector2(x, y);
+			currentAttempt++;
+		}
+		while (IsOverlapping(position) && currentAttempt < maxAttempts);
+
+		return position;
+	}
+
+	bool IsOverlapping(Vector2 position)
+	{
+		foreach (Collider2D collider in planetColliders)
+		{
+			if (collider.bounds.Contains(position))
 			{
-				return true; // Position is already used
+				return true;
 			}
 		}
-		return false; // Position is not used
+
+
+		return false;
 	}
 }
