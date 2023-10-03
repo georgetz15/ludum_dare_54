@@ -99,7 +99,7 @@ public class TaskController : MonoBehaviour
 		if (mission.PlanetFrom != sc.CurrentPlanet || sc.IsTravelling)
 			return TaskErrorCode.INVALID_START_PLANET;
 
-		if (mission.CargoUnits >= sc.MaxCargoCapacity - sc.Cargo)
+		if (mission.CargoUnits > sc.MaxCargoCapacity - sc.Cargo)
 			return TaskErrorCode.INSUFFICIENT_SPACE;
 
         return TaskErrorCode.OK;	
