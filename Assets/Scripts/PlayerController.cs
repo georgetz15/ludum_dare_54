@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 public class PlayerController : MonoBehaviour
 {
@@ -109,5 +110,55 @@ public class PlayerController : MonoBehaviour
         var selected = value.Get<float>() > 0.5f;
 
         upgradesMenu.SetActive(!upgradesMenu.activeSelf);
+    }
+
+    private void OnSingleTouch(InputValue value)
+    {
+        var val = value.Get<TouchPhase>();
+        Debug.Log($"Touch release value {val}");
+
+        if (val != TouchPhase.Ended) return;
+        if (!_target) return;
+        
+        OnHoverExit(_target);
+        _target = null;
+    }
+
+    private void OnTouchMove(InputValue value)
+    {
+        var dir = value.Get<Vector2>();
+
+        _mousePosition = value.Get<Vector2>();
+        var target = GetMouseTarget(_camera);
+
+        if (target == _target) return;
+        if (target is null)
+        {
+            OnHoverExit(_target);
+            _target = null;
+            return;
+        }
+
+        if (!GameController.IsInPlanetsLayer(target.gameObject.layer)) return;
+
+        _target = target;
+        OnHoverEnter(_target);
+    }
+
+    private void OnTouchTap(InputValue value)
+    {
+        var tap = value.Get<float>() > 0.5f;
+        if (!tap) return;
+        
+        _mousePosition = Touchscreen.current.position.ReadValue();
+        var target = GetMouseTarget(_camera);
+
+        if (target is not null)
+        {
+            var pc = target.GetComponent<PlanetController>();
+            if (pc is null) return;
+            onPlanetSelected.Invoke(target.gameObject);
+            pc.OnSelect();
+        }
     }
 }
