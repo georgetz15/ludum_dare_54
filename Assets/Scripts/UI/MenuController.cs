@@ -1,18 +1,42 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+public class AudioSourceInfo
+{
+    public AudioSource src {  get; set; }
+    public float initialVol { get; set; }
+}
+
 public class MenuController : MonoBehaviour
 {
     [SerializeField] private GameObject Menu;
     [SerializeField] private Toggle MenuToggle;
-    [SerializeField] private AudioListener audioListener;
-    [SerializeField] private TMP_Text muteButtonText;
+	[SerializeField] private TMP_Text muteButtonText;
 
-    public void ToggleMenu()
+    private float FadeDuration = 0.1f;
+
+    private List<AudioSourceInfo> audioSources = new List<AudioSourceInfo>();
+	private void Awake()
+	{
+		var srcObj = GameController.GetObjectsInLayer(LayerMask.GetMask("Audio")).ToList();
+        foreach (var src in srcObj)
+        {
+            var castSrc = src.gameObject.GetComponent<AudioSource>();
+
+			AudioSourceInfo tmp = new AudioSourceInfo();
+            tmp.src = castSrc;
+            tmp.initialVol = castSrc.volume;
+            audioSources.Add(tmp);
+        }
+	}
+
+	public void ToggleMenu()
     {
         if (Menu.activeSelf)
         {
@@ -55,7 +79,35 @@ public class MenuController : MonoBehaviour
 
     public void Mute()
     {
-        audioListener.enabled = !audioListener.enabled;
-        muteButtonText.text = audioListener.enabled ? "MUTE" : "UN-MUTE";
-    }
+        foreach (var audioSource in audioSources)
+        {
+            var src = audioSource.src;
+
+            var isMuted = (src.volume == 0f); 
+
+            if (isMuted)
+            {
+                StartCoroutine(FadeVolume(src, audioSource.initialVol));
+            } else
+            {
+                StartCoroutine(FadeVolume(src, 0f));
+            }
+		}
+	}
+
+	private IEnumerator FadeVolume(AudioSource src, float targetVolume)
+	{
+		float startVolume = src.volume;
+		float startTime = Time.time;
+
+		while (Time.time - startTime < FadeDuration)
+		{
+			float elapsed = Time.time - startTime;
+			float t = elapsed / FadeDuration;
+			src.volume = Mathf.Lerp(startVolume, targetVolume, t);
+			yield return null;
+		}
+
+		src.volume = targetVolume;
+	}
 }
