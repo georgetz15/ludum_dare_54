@@ -1,6 +1,7 @@
 # Space Courier "Limited"
 
 LudumDare54 submission: https://ldjam.com/events/ludum-dare/54/$375075
+
 Play in browser: https://fff-fox.itch.io/space-courier-limited
 
 ## Credits
