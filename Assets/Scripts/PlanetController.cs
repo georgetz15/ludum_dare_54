@@ -7,9 +7,9 @@ public class PlanetController : MonoBehaviour
     public int planetID;
     private Animator animator;
     [SerializeField] private GameObject glow;
-    [SerializeField] private Color hoverColor = Color.white;
-    [SerializeField] private Color fromColor = new (217, 153, 93);
-    [SerializeField] private Color toColor = new (93, 217, 124);
+    private readonly Color _hoverColor = UIPalette.PlanetHoverColor;
+    private readonly Color _fromColor = UIPalette.PlanetOriginColor;
+    private readonly Color _toColor = UIPalette.PlanetDestinationColor;
 
     public enum GlowType
     {
@@ -63,13 +63,13 @@ public class PlanetController : MonoBehaviour
         switch (glowType)
         {
             case GlowType.Hover:
-                spriteRenderer.color = hoverColor;
+                spriteRenderer.color = _hoverColor;
                 break;
             case GlowType.From:
-                spriteRenderer.color = fromColor;
+                spriteRenderer.color = _fromColor;
                 break;
             case GlowType.To:
-                spriteRenderer.color = toColor;
+                spriteRenderer.color = _toColor;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(glowType), glowType, null);

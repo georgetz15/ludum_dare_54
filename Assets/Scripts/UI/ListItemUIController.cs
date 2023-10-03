@@ -83,7 +83,11 @@ public class ListItemUIController : MonoBehaviour, IPointerEnterHandler, IPointe
 
         titleText.text = task.CargoName;
         fromPlanetText.text = $"From: {task.PlanetFrom.name}";
+        fromPlanetText.color = UIPalette.PlanetOriginColor;
+        
         toPlanetText.text = $"To: {task.PlanetTo.name}";
+        toPlanetText.color = UIPalette.PlanetDestinationColor;
+        
         rewardText.text = $"Reward: {task.Reward} credits";
         cargoText.text = $"Cargo: {task.CargoUnits} units";
         statusText.text = $"Status: {GetTaskStatusStr()}";
