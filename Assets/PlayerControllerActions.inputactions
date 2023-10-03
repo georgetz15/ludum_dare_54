@@ -75,7 +75,7 @@
                 {
                     "name": "",
                     "id": "0ba07340-8420-441a-a117-cbad88457c66",
-                    "path": "<Touchscreen>/primaryTouch/indirectTouch",
+                    "path": "<Touchscreen>/primaryTouch/tap",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
@@ -87,6 +87,17 @@
                     "name": "",
                     "id": "6b97e48c-bf4b-46c2-b11b-58e94f04adbb",
                     "path": "<Mouse>/position",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Look",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "29a24936-d5aa-4617-a529-6da4c4dab5e1",
+                    "path": "<Touchscreen>/primaryTouch/position",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
