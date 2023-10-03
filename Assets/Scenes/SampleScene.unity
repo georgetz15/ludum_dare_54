@@ -917,14 +917,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 209699559}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 1.6859261, y: -1.3880482, z: -0.70243955}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1772905175}
   - {fileID: 317379826}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 2044383505}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &283973230
 GameObject:
@@ -1312,7 +1312,7 @@ GameObject:
   m_Component:
   - component: {fileID: 317379826}
   - component: {fileID: 317379825}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: MUZIK
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2594,7 +2594,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Menu: {fileID: 692306465}
   MenuToggle: {fileID: 825606995}
-  audioListener: {fileID: 519420029}
   muteButtonText: {fileID: 489148471}
 --- !u!114 &692306467
 MonoBehaviour:
@@ -5613,10 +5612,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_UiScaleMode: 0
+  m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 800, y: 600}
+  m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0
   m_PhysicalUnit: 3
@@ -5867,7 +5866,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1772905175}
   - component: {fileID: 1772905174}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SFX
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7503,6 +7502,7 @@ Transform:
   - {fileID: 471993912}
   - {fileID: 380320536}
   - {fileID: 1321537526}
+  - {fileID: 209699561}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2044383506
@@ -7732,4 +7732,3 @@ SceneRoots:
   - {fileID: 1702365478}
   - {fileID: 2067528704}
   - {fileID: 1116151394}
-  - {fileID: 209699561}
