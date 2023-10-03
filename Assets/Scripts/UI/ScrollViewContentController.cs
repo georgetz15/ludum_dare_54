@@ -41,7 +41,7 @@ public class ScrollViewContentController : MonoBehaviour
 
     public void createListItem(PlayerTask task)
     {
-        var item = Instantiate(listItemPrefab, transform, true);
+        var item = Instantiate(listItemPrefab, transform, false);
         var liController = item.GetComponent<ListItemUIController>();
         liController.SetListItem(task);
         _tasks.Add(task, item);
